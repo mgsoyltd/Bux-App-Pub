@@ -1,0 +1,125 @@
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+
+import auth from "../services/authService";
+import Table from "./common/table";
+import { deleteReading } from "../services/readingsService";
+
+class ReadingsTable extends Component {
+	columns = [
+		{
+			path: "imageURL",
+			content: (reading) => (
+				<div
+					style={{
+						display: "flex",
+						justifyContent: "center",
+						alignItems: "center",
+					}}
+				>
+					<img
+						style={{ height: "auto", maxWidth: "50px" }}
+						alt=""
+						src={reading.books_data.imageURL}
+					/>
+				</div>
+			),
+		},
+		{
+			path: "title",
+			label: "Title",
+			content: (reading) => (
+				<Link to={`/readings/${reading._id}`}>{reading.books_data.title}</Link>
+			),
+		},
+		{
+			path: "author",
+			label: "Author",
+			content: (reading) => reading.books_data.author,
+		},
+		{
+			path: "ISBN",
+			label: "ISBN",
+			content: (reading) => reading.books_data.ISBN,
+		},
+		{
+			path: "description",
+			label: "Description",
+			content: (reading) => reading.books_data.description,
+		},
+		{
+			path: "pages",
+			label: "Pages",
+			content: (reading) => reading.books_data.pages,
+		},
+		{
+			path: "current_page",
+			label: "Current page",
+			content: (reading) => reading.current_page,
+			// content: (reading) => (
+			// 	<InputRange
+			// 		maxValue={reading.books_data.pages}
+			// 		minValue={0}
+			// 		value={this.state.curPage}
+			// 		onChange={(value) => this.setState({ value })}
+			// 	/>
+			// ),
+		},
+		{
+			path: "time_spent",
+			label: "Time spent",
+			content: (reading) => reading.time_spent,
+		},
+		{
+			path: "rating",
+			label: "Rating",
+			content: (reading) => reading.rating,
+		},
+		{
+			path: "comments",
+			label: "Comments",
+			content: (reading) => reading.comments,
+		},
+		{
+			path: "updatedAt",
+			label: "Last update",
+			content: (reading) => reading.updatedAt,
+		},
+	];
+
+	deleteColumn = {
+		key: "delete",
+		content: (reading) => (
+			<button
+				onClick={() => this.props.onDelete(reading)}
+				className="btn btn-danger btn-sm"
+			>
+				Delete
+			</button>
+		),
+	};
+
+	constructor() {
+		super();
+		const user = auth.getCurrentUser();
+		if (user && user.isAdmin) this.columns.push(this.deleteColumn);
+		// this.state = {
+		// 	curPage: { min: 0, max: 0 },
+		// };
+	}
+
+	render() {
+		const { readings, sortColumn, onSort } = this.props;
+
+		return (
+			<Table
+				columns={this.columns}
+				data={readings}
+				sortColumn={sortColumn}
+				onSort={onSort}
+			/>
+		);
+	}
+}
+
+export default ReadingsTable;
