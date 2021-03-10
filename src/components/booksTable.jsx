@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-import { deleteBook } from "../services/bookService";
 import auth from "../services/authService";
 import Table from "./common/table";
 

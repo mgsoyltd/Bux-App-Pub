@@ -3,11 +3,7 @@ import { Link } from "react-router-dom";
 import _ from "lodash";
 import { toast } from "react-toastify";
 
-import {
-	getReadings,
-	deleteReading,
-	getReadingsByUser,
-} from "../services/readingsService";
+import { deleteReading, getReadingsByUser } from "../services/readingsService";
 import ReadingsTable from "./readingsTable";
 import Pagination from "./common/pagination";
 import SearchBox from "./common/searchBox";

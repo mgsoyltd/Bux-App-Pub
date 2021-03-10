@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import auth from "../services/authService";
 import Table from "./common/table";
-import { deleteReading } from "../services/readingsService";
+import FormatDate from "./common/date";
 
 class ReadingsTable extends Component {
 	columns = [
@@ -56,14 +56,6 @@ class ReadingsTable extends Component {
 			path: "current_page",
 			label: "Current page",
 			content: (reading) => reading.current_page,
-			// content: (reading) => (
-			// 	<InputRange
-			// 		maxValue={reading.books_data.pages}
-			// 		minValue={0}
-			// 		value={this.state.curPage}
-			// 		onChange={(value) => this.setState({ value })}
-			// 	/>
-			// ),
 		},
 		{
 			path: "time_spent",
@@ -83,7 +75,7 @@ class ReadingsTable extends Component {
 		{
 			path: "updatedAt",
 			label: "Last update",
-			content: (reading) => reading.updatedAt,
+			content: (reading) => <FormatDate date={reading.updatedAt} />,
 		},
 	];
 

@@ -32,7 +32,7 @@ export const saveBookImage = async (book, file) => {
     if (book._id && file) {
         console.log("<<<SAVEBOOKIMAGE>>>", book, file);
         // Update image to existing book
-        const body = { ...file };
+        // const body = { ...file };
         // If all worked, the response s/b imageURL
         try {
             const res = await http.post(getBookImageUrl(book._id), file,

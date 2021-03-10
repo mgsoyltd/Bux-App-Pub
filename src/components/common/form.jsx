@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import Joi from "joi-browser";
 
-import Output from "./output";
+// import Output from "./output";
 import Input from "./input";
 import InputPH from "./inputPH";
 import Select from "./select";
+import Ratings from "./ratings";
 
 class Form extends Component {
 	state = {
@@ -18,6 +19,7 @@ class Form extends Component {
 		if (!error) return null;
 		const errors = {};
 		for (let item of error.details) errors[item.path[0]] = item.message;
+		console.log("<<<ERRORS>>>", errors);
 		return errors;
 	};
 
@@ -47,6 +49,13 @@ class Form extends Component {
 		const data = { ...this.state.data };
 		data[input.name] = input.value;
 
+		this.setState({ data, errors });
+	};
+
+	handleRatings = (newRating, name) => {
+		const errors = { ...this.state.errors };
+		const data = { ...this.state.data };
+		data[name] = newRating;
 		this.setState({ data, errors });
 	};
 
@@ -129,6 +138,19 @@ class Form extends Component {
 				options={options}
 				onChange={this.handleChange}
 				error={errors[name]}
+			/>
+		);
+	}
+
+	renderRating(name, label, color = "blue") {
+		const { data } = this.state;
+		return (
+			<Ratings
+				name={name}
+				label={label}
+				value={data[name]}
+				handler={this.handleRatings}
+				color={color}
 			/>
 		);
 	}

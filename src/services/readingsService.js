@@ -48,6 +48,13 @@ export const saveReading = async (readings, fdImage) => {
         // Update the readings data
         const body = { ...readings };
         delete body._id;
+        delete body.title;
+        delete body.ISBN;
+        delete body.author;
+        delete body.description;
+        delete body.imageURL;
+        delete body.pages;
+        console.log("<<<BODY>>>", body);
         try {
             const resPut = await http.put(getReadingsUrl(readings._id), body);
             console.log("<<<SAVEREADINGS:resPut>>>", resPut);

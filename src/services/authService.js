@@ -13,7 +13,7 @@ const getJwt = () => {
 	return jwt;
 }
 
-export const getApiKey = () => {
+const getApiKey = () => {
 	let api = localStorage.getItem(apiKey);
 	if (api === undefined) api = null;
 	return api;

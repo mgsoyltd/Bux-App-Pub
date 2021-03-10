@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Joi from "joi-browser";
 import { getReading, saveReading } from "../services/readingsService";
 import Form from "./common/form";
@@ -22,10 +22,13 @@ class ReadingForm extends Form {
 		pages: Joi.number().empty(""),
 		imageURL: Joi.string().empty(""),
 
+		users_id: Joi.string(),
+		books_id: Joi.string(),
 		current_page: Joi.number(),
 		time_spent: Joi.number(),
+		rating: Joi.number().min(0).max(5),
 		comments: Joi.string().empty(""), // Optional
-		updatedAt: Joi.date().timestamp(),
+		// updatedAt: Joi.date().timestamp(),
 	};
 
 	async populateReading() {
@@ -49,6 +52,8 @@ class ReadingForm extends Form {
 	mapToViewModel(reading) {
 		return {
 			_id: reading._id,
+			users_id: reading.users_id,
+			books_id: reading.books_id,
 			title: reading.books_data.title,
 			author: reading.books_data.author,
 			ISBN: reading.books_data.ISBN,
@@ -59,7 +64,8 @@ class ReadingForm extends Form {
 			time_spent: reading.time_spent,
 			comments: reading.comments,
 			rating: reading.rating,
-			updatedAt: reading.updatedAt,
+			// updatedAt: reading.updatedAt,
+			// updatedAt: Date.now(),
 		};
 	}
 
@@ -67,7 +73,7 @@ class ReadingForm extends Form {
 		// Update reading into DB
 		const reading = this.state.data;
 
-		const updatedReading = saveReading(reading);
+		saveReading(reading);
 
 		this.props.history.push("/readings");
 	};
@@ -87,7 +93,7 @@ class ReadingForm extends Form {
 								{this.renderOutput("pages", "Pages", "number")}
 								{this.renderInputNumber("current_page", "Current page")}
 								{this.renderInputNumber("time_spent", "Reading minutes")}
-								{this.renderInputNumber("rating", "Rating")}
+								{this.renderRating("rating", "Rating")}
 								{this.renderInput("comments", "Comments")}
 								{this.renderButton("Save")}
 							</form>

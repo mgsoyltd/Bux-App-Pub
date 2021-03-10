@@ -63,7 +63,7 @@ class BookForm extends Form {
 			fdImage.append("file", this.state.imageData, this.state.imageData.name);
 		}
 
-		const updatedBook = saveBook(book, fdImage);
+		saveBook(book, fdImage);
 
 		this.props.history.push("/books");
 	};
