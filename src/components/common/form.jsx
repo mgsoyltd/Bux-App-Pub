@@ -119,6 +119,19 @@ class Form extends Component {
 		);
 	}
 
+	renderOutput(name, label, type = "text") {
+		const { data } = this.state;
+		return (
+			<Input
+				type={type}
+				name={name}
+				label={label}
+				value={data[name]}
+				readonly
+			/>
+		);
+	}
+
 	renderSelect(name, label, options) {
 		const { data, errors } = this.state;
 		return (
