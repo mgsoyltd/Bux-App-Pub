@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import _ from "lodash";
 import { toast } from "react-toastify";
 
@@ -39,6 +38,7 @@ class Readings extends Component {
 		this.setState({ readings });
 		try {
 			await deleteReading(reading._id);
+			toast.success("Book deleted from the reading list.");
 		} catch (ex) {
 			// Expected (404: not found, 400: bac request) - CLIENT ERRORS
 			//	- Display a specific error message
@@ -82,7 +82,7 @@ class Readings extends Component {
 		let filtered = allReadings;
 		if (searchQuery)
 			filtered = allReadings.filter((m) =>
-				m.title.toLowerCase().startsWith(searchQuery.toLowerCase())
+				m.books_data.title.toLowerCase().startsWith(searchQuery.toLowerCase())
 			);
 
 		const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
@@ -95,7 +95,7 @@ class Readings extends Component {
 	render() {
 		// const { length: count } = this.state.readings;
 		const { pageSize, currentPage, sortColumn, searchQuery } = this.state;
-		const { user } = this.props;
+		// const { user } = this.props;
 		// if (count === 0) return <p>There are no readings in the database</p>;
 
 		const { totalCount, data: readings } = this.getPagedData();
@@ -104,7 +104,7 @@ class Readings extends Component {
 			<div className="container">
 				<div className="row">
 					<div className="col">
-						{user && (
+						{/* {user && (
 							<Link
 								to="/readings/new"
 								className="btn btn-primary"
@@ -112,7 +112,7 @@ class Readings extends Component {
 							>
 								New Reading
 							</Link>
-						)}
+						)} */}
 						<p>Showing {totalCount} readings in the database.</p>
 						<SearchBox value={searchQuery} onChange={this.handleSearch} />
 						<ReadingsTable

@@ -12,6 +12,7 @@ import BookForm from "./components/bookForm";
 import LoginForm from "./components/loginForm";
 import Logout from "./components/logout";
 import RegisterForm from "./components/registerForm";
+import ProfileForm from "./components/profile";
 import ProtectedRoute from "./components/common/protectedRoute";
 import auth from "./services/authService";
 import "./styles/App.css";
@@ -34,6 +35,7 @@ class App extends Component {
 				<main className="container">
 					<Switch>
 						<Route path="/new" component={BookForm} />
+						<Route path="/profile" component={ProfileForm} />
 						<Route path="/register" component={RegisterForm} />
 						<Route path="/login" component={LoginForm} />
 						<Route path="/logout" component={Logout} />

@@ -35,6 +35,18 @@ class BooksTable extends Component {
 		{ path: "pages", label: "Pages" },
 	];
 
+	addReadingColumn = {
+		key: "addReading",
+		content: (book) => (
+			<button
+				onClick={() => this.props.onAddReading(book)}
+				className="btn btn-secondary btn-sm"
+			>
+				Read this
+			</button>
+		),
+	};
+
 	deleteColumn = {
 		key: "delete",
 		content: (book) => (
@@ -50,6 +62,7 @@ class BooksTable extends Component {
 	constructor() {
 		super();
 		const user = auth.getCurrentUser();
+		if (user) this.columns.push(this.addReadingColumn);
 		if (user && user.isAdmin) this.columns.push(this.deleteColumn);
 	}
 

@@ -94,10 +94,7 @@ class ReadingsTable extends Component {
 	constructor() {
 		super();
 		const user = auth.getCurrentUser();
-		if (user && user.isAdmin) this.columns.push(this.deleteColumn);
-		// this.state = {
-		// 	curPage: { min: 0, max: 0 },
-		// };
+		if (user) this.columns.push(this.deleteColumn);
 	}
 
 	render() {

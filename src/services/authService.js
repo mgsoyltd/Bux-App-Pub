@@ -23,10 +23,18 @@ http.setHeaderJwt(getJwt());
 http.setHeaderApiKey(getApiKey());
 
 const login = async (email, password) => {
-	const { data: jwt } = await http.post(apiEndpoint, { email, password });
-	console.log(jwt);
-	localStorage.setItem(tokenKey, jwt);
-	http.setHeaderJwt(getJwt());
+	try {
+		const res = await http.post(apiEndpoint, { email, password });
+		console.log("<<<LOGIN>>>", res);
+		if (res.request && res.request.status === 200) {
+			const { data: jwt } = res;
+			localStorage.setItem(tokenKey, jwt);
+			http.setHeaderJwt(getJwt());
+		}
+		return res;
+	} catch (err) {
+		return err;
+	}
 }
 
 const loginWithJwt = (jwt, api) => {
@@ -63,7 +71,7 @@ const getCurrentAPIKey = () => {
 	}
 }
 
-export default {
+const auth = {
 	login,
 	loginWithJwt,
 	logout,
@@ -72,3 +80,5 @@ export default {
 	getJwt,
 	getApiKey
 };
+
+export default auth;

@@ -1,5 +1,6 @@
 import React from "react";
 
+// Input with placeholder
 const InputPH = ({ name, label, error, ...rest }) => {
 	return (
 		<div>

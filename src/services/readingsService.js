@@ -42,7 +42,7 @@ export const getReading = async (id) => {
     }
 }
 
-export const saveReading = async (readings, fdImage) => {
+export const saveReading = async (readings) => {
     console.log("<<<SAVEREADINGS>>>", readings);
     if (readings._id) {
         // Update the readings data

@@ -24,6 +24,7 @@ class BookForm extends Form {
 		description: Joi.string().empty(""),
 		pages: Joi.number().empty(""),
 		imageURL: Joi.string().empty(""), // !! Allow empty string !!
+		book: Joi.allow(null),
 	};
 
 	async populateBook() {
@@ -48,7 +49,7 @@ class BookForm extends Form {
 			title: book.title,
 			author: book.author,
 			ISBN: book.ISBN,
-			description: book.description,
+			description: book.description || "",
 			pages: book.pages,
 			imageURL: book.imageURL,
 		};
@@ -129,7 +130,7 @@ const UploadImage = (data) => {
 
 	return (
 		<>
-			<Button variant="primary" onClick={handleShow}>
+			<Button variant="secondary" onClick={handleShow}>
 				Upload image
 			</Button>
 

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Joi from "joi-browser";
 
-// import Output from "./output";
 import Input from "./input";
 import InputPH from "./inputPH";
 import Select from "./select";
@@ -15,6 +14,7 @@ class Form extends Component {
 
 	validate = () => {
 		const options = { abortEarly: false };
+		console.log("<<<VALIDATE>>>", this.state.data);
 		const { error } = Joi.validate(this.state.data, this.schema, options);
 		if (!error) return null;
 		const errors = {};
@@ -67,8 +67,12 @@ class Form extends Component {
 		);
 	}
 
-	renderFreeButton(label, className = "btn btn-primary") {
-		return <button className={className}>{label}</button>;
+	renderFreeButton(label, handler, className = "btn btn-secondary") {
+		return (
+			<button className={className} onclick={handler}>
+				{label}
+			</button>
+		);
 	}
 
 	renderInputNumber(name, label, type = "number") {
@@ -95,19 +99,6 @@ class Form extends Component {
 				value={data[name]}
 				onChange={this.handleChange}
 				error={errors[name]}
-			/>
-		);
-	}
-
-	renderOutput(name, label, type = "text") {
-		const { data } = this.state;
-		return (
-			<Input
-				type={type}
-				name={name}
-				label={label}
-				value={data[name]}
-				readonly
 			/>
 		);
 	}

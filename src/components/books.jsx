@@ -4,10 +4,12 @@ import _ from "lodash";
 import { toast } from "react-toastify";
 
 import { getBooks, deleteBook } from "../services/bookService";
+import { getReadings, saveReading } from "../services/readingsService";
 import BooksTable from "./booksTable";
 import Pagination from "./common/pagination";
 import SearchBox from "./common/searchBox";
 import { paginate } from "../utils/paginate";
+import auth from "../services/authService";
 
 class Books extends Component {
 	state = {
@@ -27,13 +29,25 @@ class Books extends Component {
 				console.log(booksArray);
 				this.setState({ books: booksArray, isFetchingData: false });
 			})
-			.catch((err) => {
-				console.log("READ FAILURE:", err);
+			.catch((ex) => {
 				this.setState({ isFetchingData: false });
+				console.log("READ FAILURE:", ex);
+				if (ex.request) {
+					switch (ex.request.status) {
+						case 403:
+							toast.error("Access denied.");
+							break;
+						case 401:
+							toast.error("Access denied.");
+							break;
+						case 400:
+							toast.error("Bad request.");
+							break;
+						default:
+							break;
+					}
+				}
 			});
-		// const { data: bookData } = getBooks();
-		// const books = [...bookData];
-		// this.setState({ books });
 	}
 
 	handleDelete = async (book) => {
@@ -42,6 +56,7 @@ class Books extends Component {
 		this.setState({ books });
 		try {
 			await deleteBook(book._id);
+			toast.success("Book deleted successfully.");
 		} catch (ex) {
 			// Expected (404: not found, 400: bac request) - CLIENT ERRORS
 			//	- Display a specific error message
@@ -49,15 +64,71 @@ class Books extends Component {
 			// Unexpected (network down, server down, db down, bug)
 			//	- Log them
 			//	- Display a generic and friendly error message
-			if (ex.request && ex.request.status === 404)
-				toast.error("This books has already been deleted.");
-			else if (ex.request && ex.request.status === 403)
+			if (ex.request) {
+				switch (ex.request.status) {
+					case 404:
+						toast.error("This book has already been deleted.");
+						break;
+					case 403:
+						toast.error("Access denied.");
+						break;
+					case 401:
+						toast.error("Access denied.");
+						break;
+					case 400:
+						toast.error("Bad request.");
+						break;
+
+					default:
+						break;
+				}
+			}
+			// Rollback
+			this.setState({ books: originalBooks });
+		}
+	};
+
+	handleAddReading = async (book) => {
+		try {
+			const { data: readings } = await getReadings();
+			console.log("<<<READINGS>>", readings);
+			if (readings) {
+				var reading = _.result(
+					_.find(readings, (obj) => {
+						return obj.books_id === book._id;
+					}),
+					"books_id"
+				);
+				if (!reading) {
+					console.log("ADD NEW READING");
+					const user = auth.getCurrentUser();
+					reading = {
+						users_id: user._id,
+						books_id: book._id,
+						current_page: 0,
+						time_spent: 0,
+						rating: 0,
+						comments: "",
+					};
+					console.log("<<<SAVE READING>>>", reading);
+					await saveReading(reading);
+					toast.success("Book added to the reading list.");
+				}
+				// Goto Readings page
+				this.props.history.push("/readings");
+			}
+			// book._id
+		} catch (ex) {
+			// Expected (404: not found, 400: bac request) - CLIENT ERRORS
+			//	- Display a specific error message
+			//
+			// Unexpected (network down, server down, db down, bug)
+			//	- Log them
+			//	- Display a generic and friendly error message
+			if (ex.request && ex.request.status === 403)
 				toast.error("Access denied.");
 			else if (ex.request && ex.request.status === 400)
 				toast.error("Bad request");
-
-			// Rollback
-			this.setState({ books: originalBooks });
 		}
 	};
 
@@ -123,6 +194,7 @@ class Books extends Component {
 							sortColumn={sortColumn}
 							onDelete={this.handleDelete}
 							onSort={this.handleSort}
+							onAddReading={this.handleAddReading}
 						/>
 						<Pagination
 							itemsCount={totalCount}

@@ -28,7 +28,6 @@ class ReadingForm extends Form {
 		time_spent: Joi.number(),
 		rating: Joi.number().min(0).max(5),
 		comments: Joi.string().empty(""), // Optional
-		// updatedAt: Joi.date().timestamp(),
 	};
 
 	async populateReading() {
@@ -64,8 +63,6 @@ class ReadingForm extends Form {
 			time_spent: reading.time_spent,
 			comments: reading.comments,
 			rating: reading.rating,
-			// updatedAt: reading.updatedAt,
-			// updatedAt: Date.now(),
 		};
 	}
 

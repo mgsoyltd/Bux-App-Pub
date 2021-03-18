@@ -13,8 +13,7 @@ axios.interceptors.response.use(null, (error) => {
 
 	if (!expectedError) {
 		logger.log(error);
-		// console.log("Logging the error", error);
-		toast.error("An unexpected error occurred.");
+		toast.error("An unexpected error occurred. Server may be down.");
 	}
 
 	return Promise.reject(error);
@@ -52,7 +51,7 @@ const testBooks = async () => {
 	return books;
 }
 
-export default {
+const http = {
 	get: axios.get,
 	post: axios.post,
 	put: axios.put,
@@ -62,3 +61,5 @@ export default {
 	getHeaderApiKey,
 	testBooks
 };
+
+export default http;

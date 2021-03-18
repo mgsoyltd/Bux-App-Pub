@@ -2,6 +2,7 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import Joi from "joi-browser";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { toast } from "react-toastify";
 
 import logo from "../mgs_logo.svg";
 
@@ -23,9 +24,26 @@ class LoginForm extends Form {
 		// Call the server
 		try {
 			const { email, password } = this.state.data;
-			await auth.login(email, password);
-			const { state } = this.props.location;
-			window.location = state ? state.from.pathname : "/";
+			const res = await auth.login(email, password);
+			if (res.request) {
+				switch (res.request.status) {
+					case 403:
+						toast.error("Access denied.");
+						break;
+					case 401:
+						toast.error("Access denied.");
+						break;
+					case 400:
+						toast.error("Bad request.");
+						break;
+					case 200:
+						const { state } = this.props.location;
+						window.location = state ? state.from.pathname : "/";
+						break;
+					default:
+						break;
+				}
+			}
 		} catch (ex) {
 			// Expected (404: not found, 400: bad request) - CLIENT ERRORS
 			//	- Display a specific error message
