@@ -55,8 +55,28 @@ class Books extends Component {
 		const books = originalBooks.filter((m) => m._id !== book._id);
 		this.setState({ books });
 		try {
-			await deleteBook(book._id);
-			toast.success("Book deleted successfully.");
+			const res = await deleteBook(book._id);
+			if (res.request) {
+				switch (res.request.status) {
+					case 404:
+						toast.error("This book has already been deleted.");
+						break;
+					case 403:
+						toast.error("Access denied.");
+						break;
+					case 401:
+						toast.error("Access denied.");
+						break;
+					case 400:
+						toast.error("Bad request.");
+						break;
+					case 200:
+						toast.success("Book deleted successfully.");
+						break;
+					default:
+						break;
+				}
+			}
 		} catch (ex) {
 			// Expected (404: not found, 400: bac request) - CLIENT ERRORS
 			//	- Display a specific error message

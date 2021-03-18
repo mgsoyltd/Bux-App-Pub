@@ -41,11 +41,12 @@ export const saveBookImage = async (book, file) => {
                         console.log('Upload Progress: ' + Math.round(progressEvent.loaded / progressEvent.total * 100) + '%');
                     }
                 })
-            return res.data;
+            return res;
+            // return res.data;
         }
         catch (err) {
             console.log(err);
-            return null;
+            return err;
         }
     }
     return null;    // Book does not exist 
@@ -57,14 +58,25 @@ export const saveBook = async (book, fdImage) => {
         if (fdImage) {
             // Upload the image first and then bind the URL to the book
             try {
+                // const resImage = await saveBookImage(book, fdImage);
+                // if (resImage) {
+                //     // Bind the imageURL to the book
+                //     book.imageURL = resImage;
+                //     console.log("saveBookImage", resImage);
+                // }
                 const resImage = await saveBookImage(book, fdImage);
-                if (resImage) {
+                if (resImage.request && resImage.request.status === 200) {
                     // Bind the imageURL to the book
-                    book.imageURL = resImage;
-                    console.log("saveBookImage", resImage);
+                    book.imageURL = resImage.data;
+                    console.log("saveBookImage", resImage.data);
+                }
+                else {
+                    console.log("saveBookImage FAILURE", resImage.request);
+                    return resImage;
                 }
             } catch (err) {
                 console.log(err);
+                return err;
             }
         }
         // Update the book data
@@ -73,7 +85,7 @@ export const saveBook = async (book, fdImage) => {
         try {
             const resPut = await http.put(getBookUrl(book._id), body);
             console.log("<<<SAVEBOOK:resPut>>>", resPut);
-            return resPut.data;
+            return resPut;
         }
         catch (errPut) {
             console.log("<<<SAVEBOOK:errPut>>>", errPut);
@@ -83,7 +95,7 @@ export const saveBook = async (book, fdImage) => {
         try {
             const resPost = await http.post(apiEndPoint, book);
             console.log("<<<SAVEBOOK:resPost>>>", resPost);
-            return resPost.data;
+            return resPost;
         }
         catch (errPost) {
             console.log("<<<SAVEBOOK:errPost>>>", errPost);
@@ -95,7 +107,7 @@ export const saveBook = async (book, fdImage) => {
 export const deleteBook = async (id) => {
     try {
         const res = await http.delete(getBookUrl(id));
-        return res.data;
+        return res;
     } catch (err) {
         return err;
     }

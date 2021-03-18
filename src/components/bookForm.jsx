@@ -6,6 +6,7 @@ import ImageUpload from "./common/imageUpload";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { toast } from "react-toastify";
 
 class BookForm extends Form {
 	state = {
@@ -51,11 +52,11 @@ class BookForm extends Form {
 			ISBN: book.ISBN,
 			description: book.description || "",
 			pages: book.pages,
-			imageURL: book.imageURL,
+			imageURL: book.imageURL || "",
 		};
 	}
 
-	doSubmit = () => {
+	doSubmit = async () => {
 		// Update book into DB
 		const book = this.state.data;
 		let fdImage = null;
@@ -64,9 +65,26 @@ class BookForm extends Form {
 			fdImage.append("file", this.state.imageData, this.state.imageData.name);
 		}
 
-		saveBook(book, fdImage);
-
-		this.props.history.push("/books");
+		const res = await saveBook(book, fdImage);
+		if (res.request) {
+			switch (res.request.status) {
+				case 403:
+					toast.error("Access denied.");
+					break;
+				case 401:
+					toast.error("Access denied.");
+					break;
+				case 400:
+					toast.error("Bad request " + res.request.response);
+					break;
+				case 200:
+					toast.error("Book saved successfully.");
+					this.props.history.push("/books");
+					break;
+				default:
+					break;
+			}
+		}
 	};
 
 	render() {
@@ -74,7 +92,7 @@ class BookForm extends Form {
 			<>
 				<div className="container">
 					<div className="row">
-						<div class="col-lg-6 col-sm-12 left">
+						<div className="col-lg-6 col-sm-12 left">
 							<h1>Book Details</h1>
 							<form onSubmit={this.handleSubmit}>
 								{this.renderInput("title", "Title")}
@@ -94,7 +112,7 @@ class BookForm extends Form {
 								<br />
 							</div>
 						</div>
-						<div class="col-lg-6 col-sm-12 right">
+						<div className="col-lg-6 col-sm-12 right">
 							<img
 								style={{ height: "auto", maxWidth: "300px" }}
 								src={this.state.data.imageURL}
