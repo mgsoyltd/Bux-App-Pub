@@ -3,6 +3,7 @@ import Joi from "joi-browser";
 import { getReading, saveReading } from "../services/readingsService";
 import Form from "./common/form";
 import "bootstrap/dist/css/bootstrap.min.css";
+import strings from "../services/textService";
 
 class ReadingForm extends Form {
 	state = {
@@ -35,9 +36,9 @@ class ReadingForm extends Form {
 			const readingId = this.props.match.params.id;
 			if (readingId === "new") return;
 			const { data: reading } = await getReading(readingId);
-			console.log("<<<RAW DATA>>>", reading[0]);
+			// console.log("<<<RAW DATA>>>", reading[0]);
 			this.setState({ data: this.mapToViewModel(reading[0]) });
-			console.log("<<<MAPPED DATA>>>", this.state.data);
+			// console.log("<<<MAPPED DATA>>>", this.state.data);
 		} catch (ex) {
 			if (ex.request && ex.request.status === 404)
 				this.props.history.replace("/not-found");
@@ -81,18 +82,18 @@ class ReadingForm extends Form {
 				<div className="container">
 					<div className="row">
 						<div className="col-lg-6 col-sm-12 left">
-							<h1>Reading Details</h1>
+							<h1>{strings.reading_details}</h1>
 							<form onSubmit={this.handleSubmit}>
-								{this.renderOutput("title", "Title")}
-								{this.renderOutput("description", "Description")}
-								{this.renderOutput("author", "Author")}
-								{this.renderOutput("ISBN", "ISBN")}
-								{this.renderOutput("pages", "Pages", "number")}
-								{this.renderInputNumber("current_page", "Current page")}
-								{this.renderInputNumber("time_spent", "Reading minutes")}
-								{this.renderRating("rating", "Rating")}
-								{this.renderInput("comments", "Comments")}
-								{this.renderButton("Save")}
+								{this.renderOutput("title", strings.title)}
+								{this.renderOutput("description", strings.description)}
+								{this.renderOutput("author", strings.author)}
+								{this.renderOutput("ISBN", strings.ISBN)}
+								{this.renderOutput("pages", strings.pages, "number")}
+								{this.renderInputNumber("current_page", strings.current_page)}
+								{this.renderInputNumber("time_spent", strings.time_spent)}
+								{this.renderRating("rating", strings.rating)}
+								{this.renderInput("comments", strings.comments)}
+								{this.renderButton(strings.save)}
 							</form>
 							<div>
 								<br />

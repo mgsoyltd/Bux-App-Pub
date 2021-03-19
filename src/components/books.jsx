@@ -10,6 +10,7 @@ import Pagination from "./common/pagination";
 import SearchBox from "./common/searchBox";
 import { paginate } from "../utils/paginate";
 import auth from "../services/authService";
+import strings from "../services/textService";
 
 class Books extends Component {
 	state = {
@@ -204,10 +205,12 @@ class Books extends Component {
 								className="btn btn-primary"
 								style={{ marginBottom: 20 }}
 							>
-								New Book
+								{strings.new_book}
 							</Link>
 						)}
-						<p>Showing {totalCount} books in the database.</p>
+						<p>
+							{strings.showing} {totalCount} {strings.books_in_db}
+						</p>
 						<SearchBox value={searchQuery} onChange={this.handleSearch} />
 						<BooksTable
 							books={books}

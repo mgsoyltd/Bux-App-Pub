@@ -1,8 +1,9 @@
-import React, { Component } from "react";
+import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import { AppContextProvider } from './appContext';
 import NavBar from "./components/navbar";
 import NotFound from "./components/notFound";
 import Readings from "./components/readings";
@@ -17,18 +18,11 @@ import ProtectedRoute from "./components/common/protectedRoute";
 import auth from "./services/authService";
 import "./styles/App.css";
 
-class App extends Component {
-	state = {};
+const App = () => {
+	const user = auth.getCurrentUser();
 
-	componentDidMount() {
-		const user = auth.getCurrentUser();
-		this.setState({ user });
-	}
-
-	render() {
-		const { user } = this.state;
-
-		return (
+	return (
+		<AppContextProvider>
 			<React.Fragment>
 				<ToastContainer />
 				<NavBar user={user} />
@@ -55,8 +49,8 @@ class App extends Component {
 					</Switch>
 				</main>
 			</React.Fragment>
-		);
-	}
+		</AppContextProvider>
+	);
 }
 
 export default App;

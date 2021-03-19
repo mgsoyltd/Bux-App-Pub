@@ -7,6 +7,7 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { toast } from "react-toastify";
+import strings from "../services/textService";
 
 class BookForm extends Form {
 	state = {
@@ -93,14 +94,14 @@ class BookForm extends Form {
 				<div className="container">
 					<div className="row">
 						<div className="col-lg-6 col-sm-12 left">
-							<h1>Book Details</h1>
+							<h1>{strings.book_details}</h1>
 							<form onSubmit={this.handleSubmit}>
-								{this.renderInput("title", "Title")}
-								{this.renderInput("description", "Description")}
-								{this.renderInput("author", "Author")}
-								{this.renderInput("ISBN", "ISBN")}
-								{this.renderInput("pages", "Pages")}
-								{this.renderButton("Save")}
+								{this.renderInput("title", strings.title)}
+								{this.renderInput("description", strings.description)}
+								{this.renderInput("author", strings.author)}
+								{this.renderInput("ISBN", strings.ISBN)}
+								{this.renderInput("pages", strings.pages)}
+								{this.renderButton(strings.save)}
 							</form>
 							<div>
 								<br />
@@ -149,7 +150,7 @@ const UploadImage = (data) => {
 	return (
 		<>
 			<Button variant="secondary" onClick={handleShow}>
-				Upload image
+				{strings.upload_image}
 			</Button>
 
 			<Modal
@@ -159,17 +160,17 @@ const UploadImage = (data) => {
 				keyboard={false}
 			>
 				<Modal.Header closeButton>
-					<Modal.Title>Upload image</Modal.Title>
+					<Modal.Title>{strings.upload_image}</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
 					<ImageUpload onSelectImage={selectedImages} />
 				</Modal.Body>
 				<Modal.Footer>
 					<Button variant="secondary" onClick={handleCancel}>
-						Cancel
+						{strings.cancel}
 					</Button>
 					<Button variant="primary" onClick={handleUseImage}>
-						Use image
+						{strings.use_image}
 					</Button>
 				</Modal.Footer>
 			</Modal>

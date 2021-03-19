@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ImageUploader from "react-images-upload";
+import strings from "../../services/textService";
 
 class ImageUpload extends Component {
 	constructor(props) {
@@ -15,7 +16,7 @@ class ImageUpload extends Component {
 			pictures: this.state.pictures.concat(picture),
 		});
 		// Callback for the selected array of images
-		console.log("<<<onDrop>>>", picture, this.state.pictures);
+		// console.log("<<<onDrop>>>", picture, this.state.pictures);
 		this.props.onSelectImage(picture);
 	}
 
@@ -23,9 +24,10 @@ class ImageUpload extends Component {
 		return (
 			<ImageUploader
 				withIcon={true}
-				buttonText="Choose image"
+				buttonText={strings.choose_images}
+				label={strings.formatString(strings.image_label, 5, "jpg|gif|png")}
 				onChange={this.onDrop}
-				imgExtension={[".jpg", ".gif", ".png", ".gif"]}
+				imgExtension={[".jpg", ".gif", ".png"]}
 				maxFileSize={5242880}
 				singleImage={true}
 				withPreview={true}

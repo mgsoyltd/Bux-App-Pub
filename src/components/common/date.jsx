@@ -23,7 +23,7 @@ const FormatDate = ({ date }) => {
 			? parseInt(newdate.getMinutes()).toString()
 			: "0" + parseInt(newdate.getMinutes()).toString());
 
-	console.log(date, newdate, date_format_str);
+	// console.log(date, newdate, date_format_str);
 	return <div className="form-group">{date_format_str}</div>;
 };
 

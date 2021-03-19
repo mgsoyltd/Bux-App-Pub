@@ -8,6 +8,7 @@ import Form from "./common/form";
 import auth from "../services/authService";
 import { saveUser } from "../services/userService";
 import { sleep } from "./common/sleep";
+import strings from "../services/textService";
 
 class ProfileForm extends Form {
 	state = {
@@ -54,7 +55,7 @@ class ProfileForm extends Form {
 						break;
 					case 200:
 						toast.success("Changes saved successfully.");
-						sleep(5000).then(() => {
+						sleep(3000).then(() => {
 							// Force new login
 							auth.logout();
 							window.location = "/login";
@@ -81,17 +82,22 @@ class ProfileForm extends Form {
 				<main className="form-signin">
 					<form onSubmit={this.handleSubmit}>
 						<h1 className="h3 mb-3 fw-normal">{user.name}</h1>
-						{this.renderInputPH("name", "Name *", true)}
-						{this.renderInputPH("email", "Email Address *", true)}
+						{this.renderInputPH("name", strings.user_name, true)}
+						{this.renderInputPH("email", strings.user_email, true)}
 						{this.renderInputPH(
 							"password",
-							"Old Password *",
+							strings.user_pw_cur,
 							false,
 							"password"
 						)}
-						{this.renderInputPH("newpass", "New Password", false, "password")}
+						{this.renderInputPH(
+							"newpass",
+							strings.user_pw_new,
+							false,
+							"password"
+						)}
 						<br />
-						{this.renderButton("Save ", "w-100 btn btn-lg btn-primary")}
+						{this.renderButton(strings.save, "w-100 btn btn-lg btn-primary")}
 					</form>
 				</main>
 			</div>

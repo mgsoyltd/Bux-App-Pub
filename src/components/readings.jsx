@@ -7,6 +7,7 @@ import ReadingsTable from "./readingsTable";
 import Pagination from "./common/pagination";
 import SearchBox from "./common/searchBox";
 import { paginate } from "../utils/paginate";
+import strings from "../services/textService";
 
 class Readings extends Component {
 	state = {
@@ -24,10 +25,12 @@ class Readings extends Component {
 			.then(({ data: readingData }) => {
 				const readingsArray = [...readingData];
 				// console.log(readingsArray);
-				this.setState({ readings: readingsArray, isFetchingData: false });
+				this.setState({ readings: readingsArray });
 			})
 			.catch((err) => {
 				console.log("READ FAILURE:", err);
+			})
+			.then(() => {
 				this.setState({ isFetchingData: false });
 			});
 	}
@@ -104,16 +107,9 @@ class Readings extends Component {
 			<div className="container">
 				<div className="row">
 					<div className="col">
-						{/* {user && (
-							<Link
-								to="/readings/new"
-								className="btn btn-primary"
-								style={{ marginBottom: 20 }}
-							>
-								New Reading
-							</Link>
-						)} */}
-						<p>Showing {totalCount} readings in the database.</p>
+						<p>
+							{strings.showing} {totalCount} {strings.readings_in_db}
+						</p>
 						<SearchBox value={searchQuery} onChange={this.handleSearch} />
 						<ReadingsTable
 							readings={readings}

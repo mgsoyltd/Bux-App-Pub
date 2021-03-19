@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import auth from "../services/authService";
 import Table from "./common/table";
 import FormatDate from "./common/date";
+import strings from "../services/textService";
 
 class ReadingsTable extends Component {
 	columns = [
@@ -27,54 +28,54 @@ class ReadingsTable extends Component {
 		},
 		{
 			path: "title",
-			label: "Title",
+			label: strings.title,
 			content: (reading) => (
 				<Link to={`/readings/${reading._id}`}>{reading.books_data.title}</Link>
 			),
 		},
 		{
 			path: "author",
-			label: "Author",
+			label: strings.author,
 			content: (reading) => reading.books_data.author,
 		},
 		{
 			path: "ISBN",
-			label: "ISBN",
+			label: strings.ISBN,
 			content: (reading) => reading.books_data.ISBN,
 		},
 		{
 			path: "description",
-			label: "Description",
+			label: strings.description,
 			content: (reading) => reading.books_data.description,
 		},
 		{
 			path: "pages",
-			label: "Pages",
+			label: strings.pages,
 			content: (reading) => reading.books_data.pages,
 		},
 		{
 			path: "current_page",
-			label: "Current page",
+			label: strings.current_page,
 			content: (reading) => reading.current_page,
 		},
 		{
 			path: "time_spent",
-			label: "Time spent",
+			label: strings.time_spent,
 			content: (reading) => reading.time_spent,
 		},
 		{
 			path: "rating",
-			label: "Rating",
+			label: strings.rating,
 			content: (reading) => reading.rating,
 		},
 		{
 			path: "comments",
-			label: "Comments",
+			label: strings.comments,
 			content: (reading) => reading.comments,
 		},
 		{
 			path: "updatedAt",
-			label: "Last update",
+			label: strings.last_update,
 			content: (reading) => <FormatDate date={reading.updatedAt} />,
 		},
 	];
@@ -86,7 +87,7 @@ class ReadingsTable extends Component {
 				onClick={() => this.props.onDelete(reading)}
 				className="btn btn-danger btn-sm"
 			>
-				Delete
+				{strings.delete}
 			</button>
 		),
 	};

@@ -4,6 +4,7 @@ import Form from "./common/form";
 import * as userService from "../services/userService";
 import auth from "../services/authService";
 import { Redirect } from "react-router-dom";
+import strings from "../services/textService";
 
 class RegisterForm extends Form {
 	state = {
@@ -44,12 +45,12 @@ class RegisterForm extends Form {
 
 		return (
 			<div>
-				<h1>Register</h1>
+				<h1>{strings.register}</h1>
 				<form onSubmit={this.handleSubmit}>
-					{this.renderInput("username", "Username")}
-					{this.renderInput("password", "Password", "password")}
-					{this.renderInput("name", "Name")}
-					{this.renderButton("Register")}
+					{this.renderInput("username", strings.user_email)}
+					{this.renderInput("password", strings.user_password, "password")}
+					{this.renderInput("name", strings.user_name)}
+					{this.renderButton(strings.register)}
 				</form>
 			</div>
 		);

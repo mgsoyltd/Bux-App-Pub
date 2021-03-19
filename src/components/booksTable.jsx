@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 import auth from "../services/authService";
 import Table from "./common/table";
+import strings from "../services/textService";
 
 class BooksTable extends Component {
 	columns = [
@@ -26,13 +27,13 @@ class BooksTable extends Component {
 		},
 		{
 			path: "title",
-			label: "Title",
+			label: strings.title,
 			content: (book) => <Link to={`/books/${book._id}`}>{book.title}</Link>,
 		},
-		{ path: "author", label: "Author" },
-		{ path: "ISBN", label: "ISBN" },
-		{ path: "description", label: "Description" },
-		{ path: "pages", label: "Pages" },
+		{ path: "author", label: strings.author },
+		{ path: "ISBN", label: strings.ISBN },
+		{ path: "description", label: strings.description },
+		{ path: "pages", label: strings.pages },
 	];
 
 	addReadingColumn = {
@@ -42,7 +43,7 @@ class BooksTable extends Component {
 				onClick={() => this.props.onAddReading(book)}
 				className="btn btn-secondary btn-sm"
 			>
-				Read this
+				{strings.read_this}
 			</button>
 		),
 	};
@@ -54,7 +55,7 @@ class BooksTable extends Component {
 				onClick={() => this.props.onDelete(book)}
 				className="btn btn-danger btn-sm"
 			>
-				Delete
+				{strings.delete}
 			</button>
 		),
 	};
