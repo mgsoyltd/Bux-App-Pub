@@ -26,7 +26,7 @@ class Books extends Component {
 		getBooks()
 			.then(({ data: bookData }) => {
 				const booksArray = [...bookData];
-				console.log(booksArray);
+				// console.log(booksArray);
 				this.setState({ books: booksArray, isFetchingData: false });
 			})
 			.catch((ex) => {
@@ -110,18 +110,18 @@ class Books extends Component {
 
 	handleAddReading = async (book) => {
 		try {
+			const user = auth.getCurrentUser();
 			const { data: readings } = await getReadings();
-			console.log("<<<READINGS>>", readings);
+			// console.log("<<<READINGS>>", readings);
 			if (readings) {
 				var reading = _.result(
 					_.find(readings, (obj) => {
-						return obj.books_id === book._id;
+						return obj.books_id === book._id && obj.users_id === user._id;
 					}),
 					"books_id"
 				);
 				if (!reading) {
 					console.log("ADD NEW READING");
-					const user = auth.getCurrentUser();
 					reading = {
 						users_id: user._id,
 						books_id: book._id,
@@ -130,7 +130,7 @@ class Books extends Component {
 						rating: 0,
 						comments: "",
 					};
-					console.log("<<<SAVE READING>>>", reading);
+					// console.log("<<<SAVE READING>>>", reading);
 					await saveReading(reading);
 					toast.success("Book added to the reading list.");
 				}

@@ -15,12 +15,12 @@ export const register = (user) => {
 }
 
 export const saveUser = async (user) => {
-	console.log("<<<SAVEUSER>>>", user);
+	// console.log("<<<SAVEUSER>>>", user);
 	if (user._id) {
 		// Update user data
 		const body = { ...user };
 		delete body._id;
-		console.log("<<<BODY>>>", body);
+		// console.log("<<<BODY>>>", body);
 		try {
 			const res = await http.put(getUserUrl(user._id), body);
 			return res;

@@ -3,6 +3,7 @@ import Joi from "joi-browser";
 import Form from "./common/form";
 import * as userService from "../services/userService";
 import auth from "../services/authService";
+import { Redirect } from "react-router-dom";
 
 class RegisterForm extends Form {
 	state = {
@@ -37,6 +38,10 @@ class RegisterForm extends Form {
 	};
 
 	render() {
+		const user = auth.getCurrentUser();
+		// Registering done by Admin for now...
+		if (!user.isAdmin) return <Redirect to="/" />;
+
 		return (
 			<div>
 				<h1>Register</h1>

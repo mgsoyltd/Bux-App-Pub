@@ -26,7 +26,7 @@ export const getReadings = async () => {
 export const getReadingsByUser = async () => {
     try {
         const res = await http.get(getReadingsExpandAllUrl());
-        console.log(JSON.stringify(res));
+        // console.log(JSON.stringify(res));
         return res;
     } catch (err) {
         return err;

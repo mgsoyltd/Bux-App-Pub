@@ -25,7 +25,7 @@ http.setHeaderApiKey(getApiKey());
 const login = async (email, password) => {
 	try {
 		const res = await http.post(apiEndpoint, { email, password });
-		console.log("<<<LOGIN>>>", res);
+		// console.log("<<<LOGIN>>>", res);
 		if (res.request && res.request.status === 200) {
 			const { data: jwt } = res;
 			localStorage.setItem(tokenKey, jwt);
@@ -55,7 +55,7 @@ const getCurrentUser = () => {
 	try {
 		const jwt = getJwt();
 		const decoded = jwtDecode(jwt);
-		console.log("Current user:", decoded);
+		// console.log("Current user:", decoded);
 		return decoded;
 	} catch (ex) {
 		return null;

@@ -23,7 +23,7 @@ class Readings extends Component {
 		getReadingsByUser()
 			.then(({ data: readingData }) => {
 				const readingsArray = [...readingData];
-				console.log(readingsArray);
+				// console.log(readingsArray);
 				this.setState({ readings: readingsArray, isFetchingData: false });
 			})
 			.catch((err) => {
