@@ -4,9 +4,7 @@ import React from "react";
 const InputPH = ({ name, label, error, ...rest }) => {
 	return (
 		<div>
-			<label htmlFor={name} className="visually-hidden">
-				{label}
-			</label>
+			<br />
 			<input
 				{...rest}
 				name={name}

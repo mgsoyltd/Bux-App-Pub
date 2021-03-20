@@ -83,7 +83,7 @@ class ProfileForm extends Form {
 					<form onSubmit={this.handleSubmit}>
 						<h1 className="h3 mb-3 fw-normal">{user.name}</h1>
 						{this.renderInputPH("name", strings.user_name, true)}
-						{this.renderInputPH("email", strings.user_email, true)}
+						{this.renderInputPH("email", strings.user_email, false)}
 						{this.renderInputPH(
 							"password",
 							strings.user_pw_cur,
