@@ -106,9 +106,9 @@ class BookForm extends Form {
 							<div>
 								<br />
 							</div>
-							<form>
+							{/* <form>
 								<UploadImage data={this.state} />
-							</form>
+							</form> */}
 							<div>
 								<br />
 							</div>
