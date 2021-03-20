@@ -32,7 +32,9 @@ class ProfileForm extends Form {
 
 	componentDidMount() {
 		const user = auth.getCurrentUser();
-		delete user.iat;
+		if (user) {
+			delete user.iat;
+		}
 		this.setState({ data: user });
 		// console.log("<<<USER>>>", this.state.data);
 	}

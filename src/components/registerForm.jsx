@@ -8,7 +8,7 @@ import strings from "../services/textService";
 
 class RegisterForm extends Form {
 	state = {
-		data: { username: "", password: "", name: "" },
+		data: { username: "", password: "", name: "", isAdmin: false },
 		errors: {},
 	};
 
@@ -41,7 +41,7 @@ class RegisterForm extends Form {
 	render() {
 		const user = auth.getCurrentUser();
 		// Registering done by Admin for now...
-		if (!user.isAdmin) return <Redirect to="/" />;
+		if (!user || (user && !user.isAdmin)) return <Redirect to="/" />;
 
 		return (
 			<div>
