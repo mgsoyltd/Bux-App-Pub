@@ -18,7 +18,7 @@ const NavBar = ({ user }) => {
 		e.preventDefault();
 		let lang = e.target.value;
 		setState((state) => ({ ...state, language: lang }));
-		// window.location = "/";
+		window.location = "/";
 	};
 
 	return (
@@ -75,7 +75,7 @@ const NavBar = ({ user }) => {
 					)}
 					<div className="btn-group btn-sm">
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<select onChange={handleLanguageChange}>
+						<select onChange={handleLanguageChange} value={state.language}>
 							<option value="fi">FI - Finnish</option>
 							<option value="en">EN - English</option>
 						</select>
