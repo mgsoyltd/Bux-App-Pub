@@ -1,6 +1,7 @@
 const texts = {
   en: {
-    app_title: "Books Reading Goals",
+    app_title: "Reading Goals",
+    app_desc: "With this application it is easy to keep track of your reading goals.",
     readings: "Readings",
     books: "Books",
     login: "Login",
@@ -37,9 +38,11 @@ const texts = {
     user_pw_new: "New Password",
     user_password: "Password *",
     not_found: "Not Found",
+    start_reading: "Start reading",
   },
   fi: {
     app_title: "Lukutavoitteet",
+    app_desc: "Tällä sovelluksella on helppo seurata lukutavoitteitasi.",
     readings: "Luettavat",
     books: "Kirjat",
     login: "Kirjaudu sisään",
@@ -76,6 +79,7 @@ const texts = {
     user_pw_new: "Uusi salasana",
     user_password: "Salasana *",
     not_found: "Sivua ei löydy",
+    start_reading: "Aloita lukeminen",
   }
 }
 

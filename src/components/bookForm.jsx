@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import Joi from "joi-browser";
 import { getBook, saveBook } from "../services/bookService";
 import Form from "./common/form";
-import ImageUpload from "./common/imageUpload";
-import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { toast } from "react-toastify";
 import strings from "../services/textService";
+// import ImageUpload from "./common/imageUpload";
+// import Modal from "react-bootstrap/Modal";
+// import Button from "react-bootstrap/Button";
 
 class BookForm extends Form {
 	state = {
@@ -127,55 +127,55 @@ class BookForm extends Form {
 	}
 }
 
-const UploadImage = (data) => {
-	const [show, setShow] = useState(false);
+// const UploadImage = (data) => {
+// 	const [show, setShow] = useState(false);
 
-	const handleShow = () => setShow(true);
+// 	const handleShow = () => setShow(true);
 
-	const handleCancel = () => {
-		setShow(false);
-		selectedImages([]);
-	};
+// 	const handleCancel = () => {
+// 		setShow(false);
+// 		selectedImages([]);
+// 	};
 
-	const handleUseImage = () => {
-		setShow(false);
-	};
+// 	const handleUseImage = () => {
+// 		setShow(false);
+// 	};
 
-	const selectedImages = (images) => {
-		console.log("<<<selectedImages>>>", images);
-		data.data.imageData = images[0];
-		console.log("<<<BOOK>>>", data);
-	};
+// 	const selectedImages = (images) => {
+// 		console.log("<<<selectedImages>>>", images);
+// 		data.data.imageData = images[0];
+// 		console.log("<<<BOOK>>>", data);
+// 	};
 
-	return (
-		<>
-			<Button variant="secondary" onClick={handleShow}>
-				{strings.upload_image}
-			</Button>
+// 	return (
+// 		<>
+// 			<Button variant="secondary" onClick={handleShow}>
+// 				{strings.upload_image}
+// 			</Button>
 
-			<Modal
-				show={show}
-				onHide={handleCancel}
-				backdrop="static"
-				keyboard={false}
-			>
-				<Modal.Header closeButton>
-					<Modal.Title>{strings.upload_image}</Modal.Title>
-				</Modal.Header>
-				<Modal.Body>
-					<ImageUpload onSelectImage={selectedImages} />
-				</Modal.Body>
-				<Modal.Footer>
-					<Button variant="secondary" onClick={handleCancel}>
-						{strings.cancel}
-					</Button>
-					<Button variant="primary" onClick={handleUseImage}>
-						{strings.use_image}
-					</Button>
-				</Modal.Footer>
-			</Modal>
-		</>
-	);
-};
+// 			<Modal
+// 				show={show}
+// 				onHide={handleCancel}
+// 				backdrop="static"
+// 				keyboard={false}
+// 			>
+// 				<Modal.Header closeButton>
+// 					<Modal.Title>{strings.upload_image}</Modal.Title>
+// 				</Modal.Header>
+// 				<Modal.Body>
+// 					<ImageUpload onSelectImage={selectedImages} />
+// 				</Modal.Body>
+// 				<Modal.Footer>
+// 					<Button variant="secondary" onClick={handleCancel}>
+// 						{strings.cancel}
+// 					</Button>
+// 					<Button variant="primary" onClick={handleUseImage}>
+// 						{strings.use_image}
+// 					</Button>
+// 				</Modal.Footer>
+// 			</Modal>
+// 		</>
+// 	);
+// };
 
 export default BookForm;
