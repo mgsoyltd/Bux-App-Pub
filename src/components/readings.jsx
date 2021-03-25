@@ -31,7 +31,7 @@ class Readings extends Component {
 						let imageStr = reading.books_data.image.data;
 						reading.books_data.img = base64Flag + imageStr;
 					}
-					console.log(reading);
+					// console.log(reading);
 					return reading;
 				});
 				this.setState({ readings: readingsArray });

@@ -67,7 +67,7 @@ class LoginForm extends Form {
 				<main className="form-signin">
 					<form onSubmit={this.handleSubmit}>
 						<img className="mb-4" src={logo} alt="" width="72" height="57" />
-						<h1 className="h3 mb-3 fw-normal">{strings.login}</h1>
+						<h1 className="h3 mb-3 fw-normal">{strings.login_title}</h1>
 						{this.renderInputPH("email", strings.user_email, true)}
 						{this.renderInputPH(
 							"password",
@@ -81,7 +81,7 @@ class LoginForm extends Form {
 								{strings.remember_me}
 							</label>
 						</div>
-						{this.renderButton("Sign in", "w-100 btn btn-lg btn-primary")}
+						{this.renderButton(strings.login, "w-100 btn btn-lg btn-primary")}
 					</form>
 				</main>
 			</div>

@@ -20,7 +20,6 @@ class BookForm extends Form {
 		errors: {},
 	};
 
-	// schema = {
 	schema = Joi.object({
 		_id: Joi.string(),
 		title: Joi.string().max(255).required(),

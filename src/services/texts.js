@@ -47,6 +47,7 @@ const texts = {
     bad_request: "Bad request.",
     reading_already_deleted: "This reading has already been deleted.",
     remember_me: "Remember me",
+    login_title: "Please login",
   },
   fi: {
     app_title: "Lukutavoitteet",
@@ -96,6 +97,7 @@ const texts = {
     bad_request: "Virheellinen pyyntö.",
     reading_already_deleted: "Tämä luettava on jo poistettu.",
     remember_me: "Muista minut",
+    login_title: "Sisäänkirjautuminen",
   }
 }
 
