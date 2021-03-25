@@ -1,5 +1,5 @@
 import React from "react";
-import Joi from "joi-browser";
+import Joi from "joi";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { toast } from "react-toastify";
 import { Redirect } from "react-router-dom";

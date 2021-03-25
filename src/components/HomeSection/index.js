@@ -24,7 +24,7 @@ const HomeSection = ({ onToggle }) => {
                 <HomeH1>{strings.app_title}</HomeH1>
                 <HomeP>{strings.app_desc}</HomeP>
                 <HomeBtnWrapper>
-                    <Button onClick={onToggle} onMouseEnter={onHover} onMouseLeave={onHover}
+                    <Button to="" onClick={onToggle} onMouseEnter={onHover} onMouseLeave={onHover}
                         primary='true' dark='true'>
                         {strings.start_reading} {hover ? <ArrowForward /> : <ArrowRight />}
                     </Button>

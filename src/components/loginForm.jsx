@@ -1,11 +1,11 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
-import Joi from "joi-browser";
+import Joi from "joi";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { toast } from "react-toastify";
 
+import strings from "../services/textService";
 import logo from "../mgs_logo.svg";
-
 import Form from "./common/form";
 import auth from "../services/authService";
 
@@ -15,10 +15,10 @@ class LoginForm extends Form {
 		errors: {},
 	};
 
-	schema = {
+	schema = Joi.object({
 		email: Joi.string().required().label("Email address"),
 		password: Joi.string().required().label("Password"),
-	};
+	});
 
 	doSubmit = async () => {
 		// Call the server
@@ -28,13 +28,13 @@ class LoginForm extends Form {
 			if (res.request) {
 				switch (res.request.status) {
 					case 403:
-						toast.error("Access denied.");
+						toast.error(strings.access_denied);
 						break;
 					case 401:
-						toast.error("Access denied.");
+						toast.error(strings.access_denied);
 						break;
 					case 400:
-						toast.error("Bad request.");
+						toast.error(strings.bad_request);
 						break;
 					case 200:
 						const { state } = this.props.location;
@@ -67,12 +67,18 @@ class LoginForm extends Form {
 				<main className="form-signin">
 					<form onSubmit={this.handleSubmit}>
 						<img className="mb-4" src={logo} alt="" width="72" height="57" />
-						<h1 className="h3 mb-3 fw-normal">Please sign in</h1>
-						{this.renderInputPH("email", "Email Address *", true)}
-						{this.renderInputPH("password", "Password *", false, "password")}
+						<h1 className="h3 mb-3 fw-normal">{strings.login}</h1>
+						{this.renderInputPH("email", strings.user_email, true)}
+						{this.renderInputPH(
+							"password",
+							strings.user_password,
+							false,
+							"password"
+						)}
 						<div className="checkbox mb-3">
 							<label>
-								<input type="checkbox" value="remember-me" /> Remember me
+								<input type="checkbox" value="remember-me" />{" "}
+								{strings.remember_me}
 							</label>
 						</div>
 						{this.renderButton("Sign in", "w-100 btn btn-lg btn-primary")}

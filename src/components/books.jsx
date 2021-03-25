@@ -11,6 +11,7 @@ import SearchBox from "./common/searchBox";
 import { paginate } from "../utils/paginate";
 import auth from "../services/authService";
 import strings from "../services/textService";
+import arrayBufferToBase64, { base64Flag } from "../utils/arrayBufferToBase64";
 
 class Books extends Component {
 	state = {
@@ -26,8 +27,16 @@ class Books extends Component {
 		this.setState({ isFetchingData: true });
 		getBooks()
 			.then(({ data: bookData }) => {
-				const booksArray = [...bookData];
+				let booksArray = [...bookData];
 				// console.log(booksArray);
+				booksArray.map((book) => {
+					// console.log(book);
+					if (book.image) {
+						let imageStr = arrayBufferToBase64(book.image.data.data);
+						book.img = base64Flag + imageStr;
+					}
+					return book;
+				});
 				this.setState({ books: booksArray, isFetchingData: false });
 			})
 			.catch((ex) => {
@@ -36,13 +45,13 @@ class Books extends Component {
 				if (ex.request) {
 					switch (ex.request.status) {
 						case 403:
-							toast.error("Access denied.");
+							toast.error(strings.access_denied);
 							break;
 						case 401:
-							toast.error("Access denied.");
+							toast.error(strings.access_denied);
 							break;
 						case 400:
-							toast.error("Bad request.");
+							toast.error(strings.bad_request);
 							break;
 						default:
 							break;
@@ -60,19 +69,19 @@ class Books extends Component {
 			if (res.request) {
 				switch (res.request.status) {
 					case 404:
-						toast.error("This book has already been deleted.");
+						toast.error(strings.book_already_deleted);
 						break;
 					case 403:
-						toast.error("Access denied.");
+						toast.error(strings.access_denied);
 						break;
 					case 401:
-						toast.error("Access denied.");
+						toast.error(strings.access_denied);
 						break;
 					case 400:
-						toast.error("Bad request.");
+						toast.error(strings.bad_request);
 						break;
 					case 200:
-						toast.success("Book deleted successfully.");
+						toast.success(strings.book_deleted);
 						break;
 					default:
 						break;
@@ -91,13 +100,13 @@ class Books extends Component {
 						toast.error("This book has already been deleted.");
 						break;
 					case 403:
-						toast.error("Access denied.");
+						toast.error(strings.access_denied);
 						break;
 					case 401:
-						toast.error("Access denied.");
+						toast.error(strings.access_denied);
 						break;
 					case 400:
-						toast.error("Bad request.");
+						toast.error(strings.bad_request);
 						break;
 
 					default:
@@ -147,7 +156,7 @@ class Books extends Component {
 			//	- Log them
 			//	- Display a generic and friendly error message
 			if (ex.request && ex.request.status === 403)
-				toast.error("Access denied.");
+				toast.error(strings.access_denied);
 			else if (ex.request && ex.request.status === 400)
 				toast.error("Bad request");
 		}

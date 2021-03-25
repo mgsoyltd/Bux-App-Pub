@@ -1,13 +1,14 @@
-import React from "react";
-import Joi from "joi-browser";
+import React, { useState } from "react";
+import Joi from "joi";
 import { getBook, saveBook } from "../services/bookService";
 import Form from "./common/form";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { toast } from "react-toastify";
 import strings from "../services/textService";
-// import ImageUpload from "./common/imageUpload";
-// import Modal from "react-bootstrap/Modal";
-// import Button from "react-bootstrap/Button";
+import ImageUpload from "./common/imageUpload";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+import arrayBufferToBase64, { base64Flag } from "../utils/arrayBufferToBase64";
 
 class BookForm extends Form {
 	state = {
@@ -15,19 +16,22 @@ class BookForm extends Form {
 			book: null,
 		},
 		imageData: null,
+		img: null,
 		errors: {},
 	};
 
-	schema = {
+	// schema = {
+	schema = Joi.object({
 		_id: Joi.string(),
 		title: Joi.string().max(255).required(),
 		author: Joi.string().max(255).required(),
 		ISBN: Joi.string().min(10).max(20).required(),
 		description: Joi.string().empty(""),
-		pages: Joi.number().empty(""),
+		pages: Joi.number().greater(0),
 		imageURL: Joi.string().empty(""), // !! Allow empty string !!
+		image: Joi.allow(null),
 		book: Joi.allow(null),
-	};
+	});
 
 	async populateBook() {
 		try {
@@ -35,6 +39,12 @@ class BookForm extends Form {
 			if (bookId === "new") return;
 			const { data: book } = await getBook(bookId);
 			this.setState({ data: this.mapToViewModel(book) });
+
+			if (book.image) {
+				let imageStr = arrayBufferToBase64(book.image.data.data);
+				const img = base64Flag + imageStr;
+				this.setState({ img: img });
+			}
 		} catch (ex) {
 			if (ex.request && ex.request.status === 404)
 				this.props.history.replace("/not-found");
@@ -54,6 +64,7 @@ class BookForm extends Form {
 			description: book.description || "",
 			pages: book.pages,
 			imageURL: book.imageURL || "",
+			image: book.image,
 		};
 	}
 
@@ -70,16 +81,16 @@ class BookForm extends Form {
 		if (res.request) {
 			switch (res.request.status) {
 				case 403:
-					toast.error("Access denied.");
+					toast.error(strings.access_denied);
 					break;
 				case 401:
-					toast.error("Access denied.");
+					toast.error(strings.access_denied);
 					break;
 				case 400:
-					toast.error("Bad request " + res.request.response);
+					toast.error(strings.bad_request + res.request.response);
 					break;
 				case 200:
-					toast.error("Book saved successfully.");
+					toast.success(strings.book_saved);
 					this.props.history.push("/books");
 					break;
 				default:
@@ -106,9 +117,9 @@ class BookForm extends Form {
 							<div>
 								<br />
 							</div>
-							{/* <form>
+							<form>
 								<UploadImage data={this.state} />
-							</form> */}
+							</form>
 							<div>
 								<br />
 							</div>
@@ -116,7 +127,7 @@ class BookForm extends Form {
 						<div className="col-lg-6 col-sm-12 right">
 							<img
 								style={{ height: "auto", maxWidth: "300px" }}
-								src={this.state.data.imageURL}
+								src={this.state.img}
 								alt=""
 							/>
 						</div>
@@ -127,55 +138,55 @@ class BookForm extends Form {
 	}
 }
 
-// const UploadImage = (data) => {
-// 	const [show, setShow] = useState(false);
+const UploadImage = (data) => {
+	const [show, setShow] = useState(false);
 
-// 	const handleShow = () => setShow(true);
+	const handleShow = () => setShow(true);
 
-// 	const handleCancel = () => {
-// 		setShow(false);
-// 		selectedImages([]);
-// 	};
+	const handleCancel = () => {
+		setShow(false);
+		selectedImages([]);
+	};
 
-// 	const handleUseImage = () => {
-// 		setShow(false);
-// 	};
+	const handleUseImage = () => {
+		setShow(false);
+	};
 
-// 	const selectedImages = (images) => {
-// 		console.log("<<<selectedImages>>>", images);
-// 		data.data.imageData = images[0];
-// 		console.log("<<<BOOK>>>", data);
-// 	};
+	const selectedImages = (images) => {
+		console.log("<<<selectedImages>>>", images);
+		data.data.imageData = images[0];
+		toast.success(strings.image_selected);
+	};
 
-// 	return (
-// 		<>
-// 			<Button variant="secondary" onClick={handleShow}>
-// 				{strings.upload_image}
-// 			</Button>
+	return (
+		<>
+			<Button variant="secondary" onClick={handleShow}>
+				{strings.upload_image}
+			</Button>
 
-// 			<Modal
-// 				show={show}
-// 				onHide={handleCancel}
-// 				backdrop="static"
-// 				keyboard={false}
-// 			>
-// 				<Modal.Header closeButton>
-// 					<Modal.Title>{strings.upload_image}</Modal.Title>
-// 				</Modal.Header>
-// 				<Modal.Body>
-// 					<ImageUpload onSelectImage={selectedImages} />
-// 				</Modal.Body>
-// 				<Modal.Footer>
-// 					<Button variant="secondary" onClick={handleCancel}>
-// 						{strings.cancel}
-// 					</Button>
-// 					<Button variant="primary" onClick={handleUseImage}>
-// 						{strings.use_image}
-// 					</Button>
-// 				</Modal.Footer>
-// 			</Modal>
-// 		</>
-// 	);
-// };
+			<Modal
+				show={show}
+				onHide={handleCancel}
+				backdrop="static"
+				keyboard={false}
+			>
+				<Modal.Header closeButton>
+					<Modal.Title>{strings.upload_image}</Modal.Title>
+				</Modal.Header>
+				<Modal.Body>
+					<ImageUpload onSelectImage={selectedImages} />
+				</Modal.Body>
+				<Modal.Footer>
+					<Button variant="secondary" onClick={handleCancel}>
+						{strings.cancel}
+					</Button>
+					<Button variant="primary" onClick={handleUseImage}>
+						{strings.use_image}
+					</Button>
+				</Modal.Footer>
+			</Modal>
+		</>
+	);
+};
 
 export default BookForm;

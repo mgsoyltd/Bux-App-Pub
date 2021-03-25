@@ -8,6 +8,7 @@ import Pagination from "./common/pagination";
 import SearchBox from "./common/searchBox";
 import { paginate } from "../utils/paginate";
 import strings from "../services/textService";
+import { base64Flag } from "../utils/arrayBufferToBase64";
 
 class Readings extends Component {
 	state = {
@@ -25,6 +26,14 @@ class Readings extends Component {
 			.then(({ data: readingData }) => {
 				const readingsArray = [...readingData];
 				// console.log(readingsArray);
+				readingsArray.map((reading) => {
+					if (reading.books_data.image) {
+						let imageStr = reading.books_data.image.data;
+						reading.books_data.img = base64Flag + imageStr;
+					}
+					console.log(reading);
+					return reading;
+				});
 				this.setState({ readings: readingsArray });
 			})
 			.catch((err) => {
@@ -50,11 +59,11 @@ class Readings extends Component {
 			//	- Log them
 			//	- Display a generic and friendly error message
 			if (ex.request && ex.request.status === 404)
-				toast.error("This readings has already been deleted.");
+				toast.error(strings.reading_already_deleted);
 			else if (ex.request && ex.request.status === 403)
-				toast.error("Access denied.");
+				toast.error(strings.access_denied);
 			else if (ex.request && ex.request.status === 400)
-				toast.error("Bad request");
+				toast.error(strings.bad_request);
 
 			// Rollback
 			this.setState({ readings: originalReadings });

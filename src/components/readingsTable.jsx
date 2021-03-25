@@ -21,7 +21,7 @@ class ReadingsTable extends Component {
 					<img
 						style={{ height: "auto", maxWidth: "50px" }}
 						alt=""
-						src={reading.books_data.imageURL}
+						src={reading.books_data.img}
 					/>
 				</div>
 			),

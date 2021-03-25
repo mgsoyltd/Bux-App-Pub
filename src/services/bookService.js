@@ -54,38 +54,16 @@ export const saveBookImage = async (book, file) => {
 
 export const saveBook = async (book, fdImage) => {
     console.log("<<<SAVEBOOK>>>", book);
+    let res = {};
     if (book._id) {
-        if (fdImage) {
-            // Upload the image first and then bind the URL to the book
-            try {
-                // const resImage = await saveBookImage(book, fdImage);
-                // if (resImage) {
-                //     // Bind the imageURL to the book
-                //     book.imageURL = resImage;
-                //     console.log("saveBookImage", resImage);
-                // }
-                const resImage = await saveBookImage(book, fdImage);
-                if (resImage.request && resImage.request.status === 200) {
-                    // Bind the imageURL to the book
-                    book.imageURL = resImage.data;
-                    console.log("saveBookImage", resImage.data);
-                }
-                else {
-                    console.log("saveBookImage FAILURE", resImage.request);
-                    return resImage;
-                }
-            } catch (err) {
-                console.log(err);
-                return err;
-            }
-        }
         // Update the book data
         const body = { ...book };
         delete body._id;
+        delete body.image;
         try {
             const resPut = await http.put(getBookUrl(book._id), body);
             console.log("<<<SAVEBOOK:resPut>>>", resPut);
-            return resPut;
+            res = resPut;
         }
         catch (errPut) {
             console.log("<<<SAVEBOOK:errPut>>>", errPut);
@@ -95,13 +73,33 @@ export const saveBook = async (book, fdImage) => {
         try {
             const resPost = await http.post(apiEndPoint, book);
             console.log("<<<SAVEBOOK:resPost>>>", resPost);
-            return resPost;
+            book._id = resPost.data._id;
+            res = resPost;
         }
         catch (errPost) {
             console.log("<<<SAVEBOOK:errPost>>>", errPost);
             return errPost;
         }
     }
+
+    if (fdImage && book._id) {
+        // Upload the image first and then bind the URL to the book
+        try {
+            const resImage = await saveBookImage(book, fdImage);
+            if (resImage.request && resImage.request.status === 200) {
+                // book.imageURL = resImage.data;
+                console.log("saveBookImage", resImage.data);
+            }
+            else {
+                console.log("saveBookImage FAILURE", resImage.request);
+                return resImage;
+            }
+        } catch (err) {
+            console.log(err);
+            return err;
+        }
+    }
+    return res;
 }
 
 export const deleteBook = async (id) => {

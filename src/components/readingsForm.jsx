@@ -1,35 +1,37 @@
 import React from "react";
-import Joi from "joi-browser";
+import Joi from "joi";
 import { getReading, saveReading } from "../services/readingsService";
 import Form from "./common/form";
 import "bootstrap/dist/css/bootstrap.min.css";
 import strings from "../services/textService";
+import { base64Flag } from "../utils/arrayBufferToBase64";
 
 class ReadingForm extends Form {
 	state = {
 		data: {
 			reading: null,
 		},
-		imageData: null,
 		errors: {},
 	};
 
-	schema = {
+	// schema = {
+	schema = Joi.object({
 		_id: Joi.string(),
 		title: Joi.string(),
 		author: Joi.string(),
 		ISBN: Joi.string(),
 		description: Joi.string().empty(""),
-		pages: Joi.number().empty(""),
+		pages: Joi.number(),
 		imageURL: Joi.string().empty(""),
+		image: Joi.allow(null),
 
 		users_id: Joi.string(),
 		books_id: Joi.string(),
-		current_page: Joi.number(),
-		time_spent: Joi.number(),
+		current_page: Joi.number().min(0).max(Joi.ref("pages")),
+		time_spent: Joi.number().min(0),
 		rating: Joi.number().min(0).max(5),
 		comments: Joi.string().empty(""), // Optional
-	};
+	});
 
 	async populateReading() {
 		try {
@@ -39,6 +41,11 @@ class ReadingForm extends Form {
 			// console.log("<<<RAW DATA>>>", reading[0]);
 			this.setState({ data: this.mapToViewModel(reading[0]) });
 			// console.log("<<<MAPPED DATA>>>", this.state.data);
+			const image = this.state.data.image;
+			if (image) {
+				const img = base64Flag + image.data;
+				this.setState({ img: img });
+			}
 		} catch (ex) {
 			if (ex.request && ex.request.status === 404)
 				this.props.history.replace("/not-found");
@@ -60,6 +67,7 @@ class ReadingForm extends Form {
 			description: reading.books_data.description,
 			pages: reading.books_data.pages,
 			imageURL: reading.books_data.imageURL,
+			image: reading.books_data.image,
 			current_page: reading.current_page,
 			time_spent: reading.time_spent,
 			comments: reading.comments,
@@ -105,7 +113,7 @@ class ReadingForm extends Form {
 						<div className="col-lg-6 col-sm-12 right">
 							<img
 								style={{ height: "auto", maxWidth: "300px" }}
-								src={this.state.data.imageURL}
+								src={this.state.img}
 								alt=""
 							/>
 						</div>

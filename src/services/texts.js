@@ -39,6 +39,14 @@ const texts = {
     user_password: "Password *",
     not_found: "Not Found",
     start_reading: "Start reading",
+    image_selected: "Image selected, please save.",
+    book_saved: "Book saved successfully.",
+    book_deleted: "Book deleted successfully.",
+    book_already_deleted: "This book has already been deleted.",
+    access_denied: "Access denied.",
+    bad_request: "Bad request.",
+    reading_already_deleted: "This reading has already been deleted.",
+    remember_me: "Remember me",
   },
   fi: {
     app_title: "Lukutavoitteet",
@@ -80,6 +88,14 @@ const texts = {
     user_password: "Salasana *",
     not_found: "Sivua ei löydy",
     start_reading: "Aloita lukeminen",
+    image_selected: "Kuva valittu, ole hyvä ja tallenna.",
+    book_saved: "Kirja talletettu.",
+    book_deleted: "Kirja poistettu.",
+    book_already_deleted: "Tämä kirja on jo poistettu.",
+    access_denied: "Pääsy evätty.",
+    bad_request: "Virheellinen pyyntö.",
+    reading_already_deleted: "Tämä luettava on jo poistettu.",
+    remember_me: "Muista minut",
   }
 }
 

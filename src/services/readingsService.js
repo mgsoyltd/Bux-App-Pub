@@ -54,10 +54,11 @@ export const saveReading = async (readings) => {
         delete body.description;
         delete body.imageURL;
         delete body.pages;
-        console.log("<<<BODY>>>", body);
+        delete body.image;
+        // console.log("<<<BODY>>>", body);
         try {
             const resPut = await http.put(getReadingsUrl(readings._id), body);
-            console.log("<<<SAVEREADINGS:resPut>>>", resPut);
+            // console.log("<<<SAVEREADINGS:resPut>>>", resPut);
             return resPut.data;
         }
         catch (errPut) {
@@ -67,7 +68,7 @@ export const saveReading = async (readings) => {
     } else {
         try {
             const resPost = await http.post(apiEndPoint, readings);
-            console.log("<<<SAVEREADINGS:resPost>>>", resPost);
+            // console.log("<<<SAVEREADINGS:resPost>>>", resPost);
             return resPost.data;
         }
         catch (errPost) {
