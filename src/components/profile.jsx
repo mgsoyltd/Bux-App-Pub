@@ -22,13 +22,13 @@ class ProfileForm extends Form {
 		errors: {},
 	};
 
-	schema = {
+	schema = Joi.object({
 		_id: Joi.string().required(),
 		name: Joi.string().required().label("Name"),
 		email: Joi.string().required().label("Email address"),
 		password: Joi.string().required().label("Old password"),
 		newpass: Joi.string().empty("").label("New password"),
-	};
+	});
 
 	componentDidMount() {
 		const user = auth.getCurrentUser();
