@@ -76,8 +76,8 @@ const NavBar = ({ user }) => {
 					<div className="btn-group btn-sm">
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						<select onChange={handleLanguageChange} value={state.language}>
-							<option value="fi">FI - Finnish</option>
-							<option value="en">EN - English</option>
+							<option value="fi">{strings.finnish_lang}</option>
+							<option value="en">{strings.english_lang}</option>
 						</select>
 					</div>
 				</div>

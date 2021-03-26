@@ -50,7 +50,7 @@ class Readings extends Component {
 		this.setState({ readings });
 		try {
 			await deleteReading(reading._id);
-			toast.success("Book deleted from the reading list.");
+			toast.success(strings.reading_deleted);
 		} catch (ex) {
 			// Expected (404: not found, 400: bac request) - CLIENT ERRORS
 			//	- Display a specific error message

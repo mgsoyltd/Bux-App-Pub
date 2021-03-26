@@ -48,6 +48,11 @@ const texts = {
     reading_already_deleted: "This reading has already been deleted.",
     remember_me: "Remember me",
     login_title: "Please login",
+    reading_added: "Book added to the reading list.",
+    reading_deleted: "Book deleted from the reading list.",
+    changes_saved: "Changes saved successfully.",
+    finnish_lang: "FI - Finnish",
+    english_lang: "EN - English",
   },
   fi: {
     app_title: "Lukutavoitteet",
@@ -98,6 +103,11 @@ const texts = {
     reading_already_deleted: "Tämä luettava on jo poistettu.",
     remember_me: "Muista minut",
     login_title: "Sisäänkirjautuminen",
+    reading_added: "Kirja lisätty luettavien listalle.",
+    reading_deleted: "Kirja poistettu luettavien listalta.",
+    changes_saved: "Muutokset talletettu.",
+    finnish_lang: "FI - Suomi",
+    english_lang: "EN - Englanti",
   }
 }
 

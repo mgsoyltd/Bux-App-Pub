@@ -47,16 +47,16 @@ class ProfileForm extends Form {
 			if (res.request) {
 				switch (res.request.status) {
 					case 403:
-						toast.error("Access denied.");
+						toast.error(strings.access_denied);
 						break;
 					case 401:
-						toast.error("Access denied.");
+						toast.error(strings.access_denied);
 						break;
 					case 400:
-						toast.error("Bad request.");
+						toast.error(strings.bad_request);
 						break;
 					case 200:
-						toast.success("Changes saved successfully.");
+						toast.success(strings.changes_saved);
 						sleep(3000).then(() => {
 							// Force new login
 							auth.logout();

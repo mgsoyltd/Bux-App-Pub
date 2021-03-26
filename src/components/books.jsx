@@ -97,7 +97,7 @@ class Books extends Component {
 			if (ex.request) {
 				switch (ex.request.status) {
 					case 404:
-						toast.error("This book has already been deleted.");
+						toast.error(strings.book_already_deleted);
 						break;
 					case 403:
 						toast.error(strings.access_denied);
@@ -142,7 +142,7 @@ class Books extends Component {
 					};
 					// console.log("<<<SAVE READING>>>", reading);
 					await saveReading(reading);
-					toast.success("Book added to the reading list.");
+					toast.success(strings.reading_added);
 				}
 				// Goto Readings page
 				this.props.history.push("/readings");
