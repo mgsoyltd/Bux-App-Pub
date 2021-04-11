@@ -27,6 +27,9 @@ class LoginForm extends Form {
 			const res = await auth.login(email, password);
 			if (res.request) {
 				switch (res.request.status) {
+					case 404:
+						toast.error(strings.internal_error);
+						break;
 					case 403:
 						toast.error(strings.access_denied);
 						break;
@@ -45,7 +48,7 @@ class LoginForm extends Form {
 				}
 			}
 		} catch (ex) {
-			// Expected (404: not found, 400: bad request) - CLIENT ERRORS
+			// Expected (404: not found, 400: bad request) - CLIENT ERRORS
 			//	- Display a specific error message
 			//
 			// Unexpected (network down, server down, db down, bug)
