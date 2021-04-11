@@ -41,7 +41,7 @@ class LoginForm extends Form {
 						break;
 					case 200:
 						const { state } = this.props.location;
-						window.location = state ? state.from.pathname : "/";
+						window.location = state ? state.from.pathname : "/readings";
 						break;
 					default:
 						break;
@@ -63,7 +63,7 @@ class LoginForm extends Form {
 	};
 
 	render() {
-		if (auth.getCurrentUser()) return <Redirect to="/" />;
+		if (auth.getCurrentUser()) return <Redirect to="/readings" />;
 
 		return (
 			<div className="text-center">
