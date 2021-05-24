@@ -6,37 +6,47 @@ import { Redirect } from "react-router-dom";
 
 import Form from "./common/form";
 import auth from "../services/authService";
-import { saveUser } from "../services/userService";
+import { currentUser, saveUser } from "../services/userService";
 import { sleep } from "./common/sleep";
 import strings from "../services/textService";
 
 class ProfileForm extends Form {
 	state = {
 		data: {
-			_id: "",
 			name: "",
 			email: "",
 			password: "",
 			newpass: "",
 		},
 		errors: {},
+		isLoading: true,
 	};
 
 	schema = Joi.object({
-		_id: Joi.string().required(),
 		name: Joi.string().required().label("Name"),
 		email: Joi.string().required().label("Email address"),
-		password: Joi.string().required().label("Old password"),
+		password: Joi.string().required().label("Current password"),
 		newpass: Joi.string().empty("").label("New password"),
 	});
 
 	componentDidMount() {
-		const user = auth.getCurrentUser();
-		if (user) {
-			delete user.iat;
-		}
-		this.setState({ data: user });
-		// console.log("<<<USER>>>", this.state.data);
+		this.state.isLoading = true;
+		currentUser()
+			.then((user) => {
+				// console.log("<<profile:componentDidMount>>", user);
+				if (user) {
+					delete user.iat;
+				}
+				// console.log("<<<USER>>>", this.state.data);
+				this.setState({ data: user, isLoading: false });
+			})
+			.catch((ex) => {
+				console.log(ex);
+				if (ex.response && ex.response.status === 404) {
+					const errors = { ...this.state.errors };
+					this.setState({ errors });
+				}
+			});
 	}
 
 	doSubmit = async () => {
@@ -76,7 +86,11 @@ class ProfileForm extends Form {
 	};
 
 	render() {
+		if (this.state.isLoading) {
+			return <h1>Loading...</h1>;
+		}
 		const user = this.state.data;
+		// console.log("<<profile:render>>", user);
 		if (!user) return <Redirect to="/" />;
 
 		return (

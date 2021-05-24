@@ -83,6 +83,8 @@ class ReadingForm extends Form {
 		this.props.history.push("/readings");
 	};
 
+	// { {this.renderInputNumber("current_page", strings.current_page)} }
+
 	render() {
 		return (
 			<>
@@ -96,8 +98,20 @@ class ReadingForm extends Form {
 								{this.renderOutput("author", strings.author)}
 								{this.renderOutput("ISBN", strings.ISBN)}
 								{this.renderOutput("pages", strings.pages, "number")}
-								{this.renderInputNumber("current_page", strings.current_page)}
-								{this.renderInputNumber("time_spent", strings.time_spent)}
+								{this.renderInputRange(
+									"current_page",
+									strings.current_page,
+									"number",
+									"0",
+									this.state.data.pages
+								)}
+								{this.renderInputRange(
+									"time_spent",
+									strings.time_spent,
+									"number",
+									"0",
+									"3600"
+								)}
 								{this.renderRating("rating", strings.rating)}
 								{this.renderInput("comments", strings.comments)}
 								{this.renderButton(strings.save)}

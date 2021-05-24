@@ -12,8 +12,9 @@ class Form extends Component {
 	};
 
 	validate = () => {
-		const options = { abortEarly: true };
+		const options = { abortEarly: true, allowUnknown: true };
 		const { error } = this.schema.validate(this.state.data, options);
+		// console.log("<<VALIDATE>>", error);
 		if (!error) return null;
 		const errors = {};
 		for (let item of error.details) errors[item.path[0]] = item.message;
@@ -84,6 +85,30 @@ class Form extends Component {
 				value={data[name]}
 				onChange={this.handleChange}
 				error={errors[name]}
+			/>
+		);
+	}
+
+	renderInputRange(
+		name,
+		label,
+		type = "number",
+		min = "0",
+		max = "10",
+		step = "1"
+	) {
+		const { data, errors } = this.state;
+		return (
+			<Input
+				type={type}
+				name={name}
+				label={label}
+				value={data[name]}
+				onChange={this.handleChange}
+				error={errors[name]}
+				min={min}
+				max={max}
+				step={step}
 			/>
 		);
 	}

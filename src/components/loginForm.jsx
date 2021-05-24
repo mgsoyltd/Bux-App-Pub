@@ -63,7 +63,7 @@ class LoginForm extends Form {
 	};
 
 	render() {
-		if (auth.getCurrentUser()) return <Redirect to="/readings" />;
+		if (auth.isLoggedIn()) return <Redirect to="/readings" />;
 
 		return (
 			<div className="text-center">

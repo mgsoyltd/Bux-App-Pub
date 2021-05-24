@@ -6,13 +6,14 @@ import { AppContextProvider } from './appContext';
 import auth from "./services/authService";
 
 function Home() {
-  // const [hidden, setHidden] = useState(false);
-  const [hidden, setHidden] = useState(auth.getCurrentUser());
+  const [hidden, setHidden] = useState(auth.isLoggedIn());
 
   const onToggle = () => {
     setHidden(!hidden);
   }
 
+  // If no user is logged in, then show the greetings page
+  // otherwise show the application page
   return (
     <Router>
       <AppContextProvider>

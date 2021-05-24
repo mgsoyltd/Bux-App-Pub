@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-import auth from "../services/authService";
 import Table from "./common/table";
 import FormatDate from "./common/date";
 import strings from "../services/textService";
+import auth from "../services/authService";
 
 class ReadingsTable extends Component {
 	columns = [

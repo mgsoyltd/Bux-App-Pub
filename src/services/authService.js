@@ -1,11 +1,12 @@
-import jwtDecode from "jwt-decode";
-
 import http from "./httpService";
+import moment from "moment";
 
 const apiEndpoint = "/auth";
-const appName = process.env.REACT_APP_NAME;
-const tokenKey = `${appName}_token`;
-const apiKey = `${appName}_APIKey`;
+const tokenKey = "id_token";
+const expireKey = "expires_at";
+const apiKey = "id_APIKey";
+const userKey = "id_name";
+const adminKey = "id_ia";
 
 const getJwt = () => {
 	let jwt = localStorage.getItem(tokenKey);
@@ -19,17 +20,27 @@ const getApiKey = () => {
 	return api;
 }
 
+const getExpiration = () => {
+	const expiration = localStorage.getItem(expireKey);
+	if (expiration) {
+		const expiresAt = JSON.parse(expiration);
+		return moment(expiresAt);
+	} else {
+		return moment();
+	}
+}
+
 http.setHeaderJwt(getJwt());
 http.setHeaderApiKey(getApiKey());
 
 const login = async (email, password) => {
 	try {
 		const res = await http.post(apiEndpoint, { email, password });
-		// console.log("<<<LOGIN>>>", res);
+		console.log("<<<LOGIN>>>", res);
 		if (res.request && res.request.status === 200) {
+
 			const { data: jwt } = res;
-			localStorage.setItem(tokenKey, jwt);
-			http.setHeaderJwt(getJwt());
+			setLocalStorage(jwt, null);
 		}
 		return res;
 	} catch (err) {
@@ -37,26 +48,72 @@ const login = async (email, password) => {
 	}
 }
 
-const loginWithJwt = (jwt, api) => {
-	localStorage.setItem(tokenKey, jwt);
-	localStorage.setItem(apiKey, api);
+const setLocalStorage = (jwt, api) => {
+
+	// Adds the expiration time defined on the JWT to the current moment
+	const expiresAt = moment().add(Number.parseInt(jwt.expiresIn), 'days');
+
+	localStorage.setItem(tokenKey, jwt.token);
+	localStorage.setItem(expireKey, JSON.stringify(expiresAt.valueOf()));
+	localStorage.setItem(userKey, jwt.name);
+	localStorage.setItem(adminKey, jwt.isAdmin);
+
 	http.setHeaderJwt(getJwt());
-	http.setHeaderApiKey(getApiKey());
+
+	if (api) {
+		localStorage.setItem(apiKey, api);
+		http.setHeaderApiKey(getApiKey());
+	}
+}
+
+const isLoggedIn = () => {
+	return moment().isBefore(getExpiration(), "second");
+}
+
+const isLoggedOut = () => {
+	if (!isLoggedIn()) {
+
+		return true;
+	} else {
+		return false;
+	}
+}
+
+const loginWithJwt = (jwt, api) => {
+	setLocalStorage(jwt, api);
 }
 
 const logout = () => {
 	localStorage.removeItem(tokenKey);
+	localStorage.removeItem(expireKey);
 	localStorage.removeItem(apiKey);
+	localStorage.removeItem(userKey);
+	localStorage.removeItem(adminKey);
+
 	http.setHeaderJwt(getJwt());
 	http.setHeaderApiKey(getApiKey());
 }
 
 const getCurrentUser = () => {
+
+	// Handle token expiration
+	if (isLoggedOut()) {
+		if (getJwt()) {
+			logout();
+		}
+	}
+
 	try {
+		let user = null;
 		const jwt = getJwt();
-		const decoded = jwtDecode(jwt);
-		// console.log("Current user:", decoded);
-		return decoded;
+		if (jwt) {
+			user = {
+				token: jwt,
+				name: localStorage.getItem(userKey),
+				isAdmin: localStorage.getItem(adminKey)
+			}
+		}
+		return user;
 	} catch (ex) {
 		return null;
 	}
@@ -78,7 +135,9 @@ const auth = {
 	getCurrentUser,
 	getCurrentAPIKey,
 	getJwt,
-	getApiKey
+	getApiKey,
+	isLoggedIn,
+	isLoggedOut
 };
 
 export default auth;

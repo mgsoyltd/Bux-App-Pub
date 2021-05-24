@@ -9,7 +9,6 @@ import BooksTable from "./booksTable";
 import Pagination from "./common/pagination";
 import SearchBox from "./common/searchBox";
 import { paginate } from "../utils/paginate";
-import auth from "../services/authService";
 import strings from "../services/textService";
 import arrayBufferToBase64, { base64Flag } from "../utils/arrayBufferToBase64";
 
@@ -27,6 +26,7 @@ class Books extends Component {
 		this.setState({ isFetchingData: true });
 		getBooks()
 			.then(({ data: bookData }) => {
+				// console.log(bookData);
 				let booksArray = [...bookData];
 				// console.log(booksArray);
 				booksArray.map((book) => {
@@ -120,27 +120,25 @@ class Books extends Component {
 
 	handleAddReading = async (book) => {
 		try {
-			const user = auth.getCurrentUser();
 			const { data: readings } = await getReadings();
 			// console.log("<<<READINGS>>", readings);
 			if (readings) {
 				var reading = _.result(
 					_.find(readings, (obj) => {
-						return obj.books_id === book._id && obj.users_id === user._id;
+						return obj.books_id === book._id;
 					}),
 					"books_id"
 				);
 				if (!reading) {
 					console.log("ADD NEW READING");
 					reading = {
-						users_id: user._id,
 						books_id: book._id,
 						current_page: 0,
 						time_spent: 0,
 						rating: 0,
 						comments: "",
 					};
-					// console.log("<<<SAVE READING>>>", reading);
+					// console.log("<<<SAVE READING>>>", reading);
 					await saveReading(reading);
 					toast.success(strings.reading_added);
 				}
@@ -149,7 +147,7 @@ class Books extends Component {
 			}
 			// book._id
 		} catch (ex) {
-			// Expected (404: not found, 400: bac request) - CLIENT ERRORS
+			// Expected (404: not found, 400: bac request) - CLIENT ERRORS
 			//	- Display a specific error message
 			//
 			// Unexpected (network down, server down, db down, bug)

@@ -1,4 +1,5 @@
 import React from "react";
+// import { useState, useEffect } from 'react';
 import { Route, Switch, Redirect } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -18,6 +19,7 @@ import ProtectedRoute from "./components/common/protectedRoute";
 import auth from "./services/authService";
 
 const App = () => {
+
 	const user = auth.getCurrentUser();
 
 	return (

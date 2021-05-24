@@ -2,8 +2,7 @@ import React from "react";
 import Joi from "joi";
 import Form from "./common/form";
 import * as userService from "../services/userService";
-import auth from "../services/authService";
-import { Redirect } from "react-router-dom";
+// import { Redirect } from "react-router-dom";
 import strings from "../services/textService";
 
 class RegisterForm extends Form {
@@ -20,11 +19,13 @@ class RegisterForm extends Form {
 
 	doSubmit = async () => {
 		try {
-			const response = await userService.register(this.state.data);
-			auth.loginWithJwt(response.headers["x-auth-token"]);
+			await userService.register(this.state.data);
+			// const response = await userService.register(this.state.data);
+			// auth.loginWithJwt(response.headers["Authorization"]);
+			// Require user to login manually
 			window.location = "/";
 		} catch (ex) {
-			// Expected (404: not found, 400: bad request) - CLIENT ERRORS
+			// Expected (404: not found, 400: bad request) - CLIENT ERRORS
 			//	- Display a specific error message
 			//
 			// Unexpected (network down, server down, db down, bug)
@@ -39,9 +40,9 @@ class RegisterForm extends Form {
 	};
 
 	render() {
-		const user = auth.getCurrentUser();
-		// Registering done by Admin for now...
-		if (!user || (user && !user.isAdmin)) return <Redirect to="/" />;
+		// const user = auth.getCurrentUser();
+		// // Registering done by Admin for now...
+		// if (!user || (user && !user.isAdmin)) return <Redirect to="/" />;
 
 		return (
 			<div>
