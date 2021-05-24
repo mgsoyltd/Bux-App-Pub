@@ -36,7 +36,6 @@ http.setHeaderApiKey(getApiKey());
 const login = async (email, password) => {
 	try {
 		const res = await http.post(apiEndpoint, { email, password });
-		console.log("<<<LOGIN>>>", res);
 		if (res.request && res.request.status === 200) {
 
 			const { data: jwt } = res;
@@ -56,6 +55,9 @@ const setLocalStorage = (jwt, api) => {
 	localStorage.setItem(tokenKey, jwt.token);
 	localStorage.setItem(expireKey, JSON.stringify(expiresAt.valueOf()));
 	localStorage.setItem(userKey, jwt.name);
+	if (jwt.isAdmin === undefined) {
+		jwt.isAdmin = false;
+	}
 	localStorage.setItem(adminKey, jwt.isAdmin);
 
 	http.setHeaderJwt(getJwt());
@@ -112,7 +114,10 @@ const getCurrentUser = () => {
 				name: localStorage.getItem(userKey),
 				isAdmin: localStorage.getItem(adminKey)
 			}
+			// eslint-disable-next-line
+			user.isAdmin = (user.isAdmin == "true");	// Truthy
 		}
+		// console.log("<<USER>>", user);
 		return user;
 	} catch (ex) {
 		return null;

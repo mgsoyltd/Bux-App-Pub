@@ -1,8 +1,8 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 import Joi from "joi";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { toast } from "react-toastify";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 import strings from "../services/textService";
 import logo from "../mgs_logo.svg";
@@ -69,15 +69,25 @@ class LoginForm extends Form {
 			<div className="text-center">
 				<main className="form-signin">
 					<form onSubmit={this.handleSubmit}>
-						<img className="mb-4" src={logo} alt="" width="72" height="57" />
+						<img
+							className="mb-4 myimage"
+							src={logo}
+							alt="logo"
+							width="50"
+							height="50"
+						/>
 						<h1 className="h3 mb-3 fw-normal">{strings.login_title}</h1>
-						{this.renderInputPH("email", strings.user_email, true)}
-						{this.renderInputPH(
-							"password",
-							strings.user_password,
-							false,
-							"password"
-						)}
+						<div className="form-floating">
+							{this.renderInputPH("email", strings.user_email, true)}
+						</div>
+						<div className="form-floating">
+							{this.renderInputPH(
+								"password",
+								strings.user_password,
+								false,
+								"password"
+							)}
+						</div>
 						<div className="checkbox mb-3">
 							<label>
 								<input type="checkbox" value="remember-me" />{" "}

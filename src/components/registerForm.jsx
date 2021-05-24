@@ -2,20 +2,21 @@ import React from "react";
 import Joi from "joi";
 import Form from "./common/form";
 import * as userService from "../services/userService";
-// import { Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import strings from "../services/textService";
+import auth from "../services/authService";
 
 class RegisterForm extends Form {
 	state = {
-		data: { username: "", password: "", name: "", isAdmin: false },
+		data: { name: "", username: "", password: "", isAdmin: false },
 		errors: {},
 	};
 
-	schema = {
-		username: Joi.string().required().email().label("Username"),
-		password: Joi.string().required().min(8).label("Password"),
+	schema = Joi.object({
 		name: Joi.string().required().label("Name"),
-	};
+		username: Joi.string().required().label("Username"),
+		password: Joi.string().required().min(8).label("Password"),
+	});
 
 	doSubmit = async () => {
 		try {
@@ -40,17 +41,17 @@ class RegisterForm extends Form {
 	};
 
 	render() {
-		// const user = auth.getCurrentUser();
-		// // Registering done by Admin for now...
-		// if (!user || (user && !user.isAdmin)) return <Redirect to="/" />;
+		// Registering done by Admin for now...
+		const user = auth.getCurrentUser();
+		if (!user || (user && !user.isAdmin)) return <Redirect to="/" />;
 
 		return (
 			<div>
 				<h1>{strings.register}</h1>
 				<form onSubmit={this.handleSubmit}>
+					{this.renderInput("name", strings.user_name)}
 					{this.renderInput("username", strings.user_email)}
 					{this.renderInput("password", strings.user_password, "password")}
-					{this.renderInput("name", strings.user_name)}
 					{this.renderButton(strings.register)}
 				</form>
 			</div>

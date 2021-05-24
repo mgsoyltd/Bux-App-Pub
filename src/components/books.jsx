@@ -26,18 +26,20 @@ class Books extends Component {
 		this.setState({ isFetchingData: true });
 		getBooks()
 			.then(({ data: bookData }) => {
-				// console.log(bookData);
-				let booksArray = [...bookData];
-				// console.log(booksArray);
-				booksArray.map((book) => {
-					// console.log(book);
-					if (book.image) {
-						let imageStr = arrayBufferToBase64(book.image.data.data);
-						book.img = base64Flag + imageStr;
-					}
-					return book;
-				});
-				this.setState({ books: booksArray, isFetchingData: false });
+				console.log(bookData);
+				if (bookData) {
+					let booksArray = [...bookData];
+					// console.log(booksArray);
+					booksArray.map((book) => {
+						// console.log(book);
+						if (book.image) {
+							let imageStr = arrayBufferToBase64(book.image.data.data);
+							book.img = base64Flag + imageStr;
+						}
+						return book;
+					});
+					this.setState({ books: booksArray, isFetchingData: false });
+				}
 			})
 			.catch((ex) => {
 				this.setState({ isFetchingData: false });

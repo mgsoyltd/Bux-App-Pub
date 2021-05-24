@@ -12,6 +12,7 @@ function getBookImageUrl(id) {
 
 export const getBooks = async () => {
     try {
+        // const res = await http.get(apiEndPoint, { responseType: 'json' });
         const res = await http.get(apiEndPoint);
         return res;
     } catch (err) {
