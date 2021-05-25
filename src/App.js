@@ -1,10 +1,8 @@
 import React from "react";
-// import { useState, useEffect } from 'react';
 import { Route, Switch, Redirect } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-// import { AppContextProvider } from './appContext';
 import NavBar from "./components/navbar";
 import NotFound from "./components/notFound";
 import Readings from "./components/readings";
@@ -23,7 +21,6 @@ const App = () => {
 	const user = auth.getCurrentUser();
 
 	return (
-		// <AppContextProvider>
 		<React.Fragment>
 			<ToastContainer />
 			<NavBar user={user} />
@@ -50,7 +47,6 @@ const App = () => {
 				</Switch>
 			</main>
 		</React.Fragment>
-		// </AppContextProvider>
 	);
 }
 

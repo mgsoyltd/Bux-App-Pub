@@ -20,7 +20,7 @@ class BooksTable extends Component {
 					<img
 						style={{ height: "auto", maxWidth: "50px" }}
 						alt=""
-						src={book.img}
+						src={book.imageURL}
 					/>
 				</div>
 			),

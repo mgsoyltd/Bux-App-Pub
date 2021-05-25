@@ -74,3 +74,9 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 In production the following environment variables must be set:
 
     REACT_APP_API_URL=<Bux API URL>   E.g. https://bux-api.herokuapp.com/api
+
+    REACT_APP_API_BASE_URL=<Cloudinary API Base URL>
+    REACT_APP_API_KEY=<Cloudinary API Key>
+    REACT_APP_API_SECRET=<Cloudinary API Secret>
+    REACT_APP_API_UPLOAD_PRESET=<Cloudinary Upload Preset>
+    REACT_APP_API_CLOUD_NAME=<Cloudinary Cloud Name>

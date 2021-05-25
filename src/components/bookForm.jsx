@@ -5,10 +5,9 @@ import Form from "./common/form";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { toast } from "react-toastify";
 import strings from "../services/textService";
-import ImageUpload from "./common/imageUpload";
-import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
 import arrayBufferToBase64, { base64Flag } from "../utils/arrayBufferToBase64";
+import UploadImage from "./imagePopup";
+import { uploadImageSigned } from "../services/imageService";
 
 class BookForm extends Form {
 	state = {
@@ -39,7 +38,11 @@ class BookForm extends Form {
 			const { data: book } = await getBook(bookId);
 			this.setState({ data: this.mapToViewModel(book) });
 
-			if (book.image) {
+			if (book.imageURL) {
+				// Image from the cloud
+				this.setState({ img: book.imageURL });
+			} else if (book.image) {
+				// Image loaded from Bux API database
 				let imageStr = arrayBufferToBase64(book.image.data.data);
 				const img = base64Flag + imageStr;
 				this.setState({ img: img });
@@ -71,9 +74,18 @@ class BookForm extends Form {
 		// Update book into DB
 		const book = this.state.data;
 		let fdImage = null;
+		// console.log(this.state);
 		if (this.state.imageData) {
-			fdImage = new FormData();
-			fdImage.append("file", this.state.imageData, this.state.imageData.name);
+			// Upload image to Bux API database - DEPRECATED
+			// fdImage = new FormData();
+			// fdImage.append("file", this.state.imageData, this.state.imageData.name);
+
+			// Upload image to the cloud
+			const url = await uploadImageSigned(this.state.imageData);
+			if (url) {
+				book.imageURL = url; // Save URL on a book
+				this.setState({ img: url }); // Show the image
+			}
 		}
 
 		const res = await saveBook(book, fdImage);
@@ -136,56 +148,5 @@ class BookForm extends Form {
 		);
 	}
 }
-
-const UploadImage = (data) => {
-	const [show, setShow] = useState(false);
-
-	const handleShow = () => setShow(true);
-
-	const handleCancel = () => {
-		setShow(false);
-		selectedImages([]);
-	};
-
-	const handleUseImage = () => {
-		setShow(false);
-	};
-
-	const selectedImages = (images) => {
-		console.log("<<<selectedImages>>>", images);
-		data.data.imageData = images[0];
-		toast.success(strings.image_selected);
-	};
-
-	return (
-		<>
-			<Button variant="secondary" onClick={handleShow}>
-				{strings.upload_image}
-			</Button>
-
-			<Modal
-				show={show}
-				onHide={handleCancel}
-				backdrop="static"
-				keyboard={false}
-			>
-				<Modal.Header closeButton>
-					<Modal.Title>{strings.upload_image}</Modal.Title>
-				</Modal.Header>
-				<Modal.Body>
-					<ImageUpload onSelectImage={selectedImages} />
-				</Modal.Body>
-				<Modal.Footer>
-					<Button variant="secondary" onClick={handleCancel}>
-						{strings.cancel}
-					</Button>
-					<Button variant="primary" onClick={handleUseImage}>
-						{strings.use_image}
-					</Button>
-				</Modal.Footer>
-			</Modal>
-		</>
-	);
-};
 
 export default BookForm;

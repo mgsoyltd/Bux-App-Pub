@@ -4,7 +4,7 @@ import { getReading, saveReading } from "../services/readingsService";
 import Form from "./common/form";
 import "bootstrap/dist/css/bootstrap.min.css";
 import strings from "../services/textService";
-import { base64Flag } from "../utils/arrayBufferToBase64";
+// import { base64Flag } from "../utils/arrayBufferToBase64";
 
 class ReadingForm extends Form {
 	state = {
@@ -40,11 +40,11 @@ class ReadingForm extends Form {
 			// console.log("<<<RAW DATA>>>", reading[0]);
 			this.setState({ data: this.mapToViewModel(reading[0]) });
 			// console.log("<<<MAPPED DATA>>>", this.state.data);
-			const image = this.state.data.image;
-			if (image) {
-				const img = base64Flag + image.data;
-				this.setState({ img: img });
-			}
+			// const image = this.state.data.image;
+			// if (image) {
+			// 	const img = base64Flag + image.data;
+			// 	this.setState({ img: img });
+			// }
 		} catch (ex) {
 			if (ex.request && ex.request.status === 404)
 				this.props.history.replace("/not-found");
@@ -126,7 +126,7 @@ class ReadingForm extends Form {
 						<div className="col-lg-6 col-sm-12 right">
 							<img
 								style={{ height: "auto", maxWidth: "300px" }}
-								src={this.state.img}
+								src={this.state.data.imageURL}
 								alt=""
 							/>
 						</div>

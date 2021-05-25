@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import ImageUploader from "react-images-upload";
 import strings from "../../services/textService";
 
+/**
+ * Dialog to upload image(s) from PC
+ */
 class ImageUpload extends Component {
 	constructor(props) {
 		super(props);

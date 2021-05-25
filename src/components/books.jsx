@@ -10,7 +10,7 @@ import Pagination from "./common/pagination";
 import SearchBox from "./common/searchBox";
 import { paginate } from "../utils/paginate";
 import strings from "../services/textService";
-import arrayBufferToBase64, { base64Flag } from "../utils/arrayBufferToBase64";
+// import arrayBufferToBase64, { base64Flag } from "../utils/arrayBufferToBase64";
 
 class Books extends Component {
 	state = {
@@ -26,16 +26,16 @@ class Books extends Component {
 		this.setState({ isFetchingData: true });
 		getBooks()
 			.then(({ data: bookData }) => {
-				console.log(bookData);
+				// console.log(bookData);
 				if (bookData) {
 					let booksArray = [...bookData];
 					// console.log(booksArray);
 					booksArray.map((book) => {
 						// console.log(book);
-						if (book.image) {
-							let imageStr = arrayBufferToBase64(book.image.data.data);
-							book.img = base64Flag + imageStr;
-						}
+						// if (book.image) {
+						// 	let imageStr = arrayBufferToBase64(book.image.data.data);
+						// 	book.img = base64Flag + imageStr;
+						// }
 						return book;
 					});
 					this.setState({ books: booksArray, isFetchingData: false });
