@@ -4,10 +4,13 @@ import './styles/index.css';
 import Home from './Home';
 import "bootstrap/dist/css/bootstrap.css";
 import logger from "./services/logService";
+import checkEnv from "./utils/config";
 
+// Init logger
 logger.init();
 
-// console.log(`${process.env.REACT_APP_NAME} ${process.env.REACT_APP_VERSION}`);
+// Check mandatory configuration
+checkEnv();
 
 ReactDOM.render(
   <React.StrictMode>
