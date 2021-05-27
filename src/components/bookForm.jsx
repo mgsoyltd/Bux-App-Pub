@@ -87,6 +87,8 @@ class BookForm extends Form {
 			// fdImage = new FormData();
 			// fdImage.append("file", this.state.imageData, this.state.imageData.name);
 
+			toast.success(strings.upload_image);
+
 			// Destroy existing image
 			if (book.imageURL) {
 				await destroyImageSigned(book.public_id);

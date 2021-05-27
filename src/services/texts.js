@@ -55,6 +55,7 @@ const texts = {
     changes_saved: "Changes saved successfully.",
     finnish_lang: "FI - Finnish",
     english_lang: "EN - English",
+    upload_image: "Uploading the image...",
   },
   fi: {
     app_title: "Lukutavoitteet",
@@ -112,6 +113,7 @@ const texts = {
     changes_saved: "Muutokset talletettu.",
     finnish_lang: "FI - Suomi",
     english_lang: "EN - Englanti",
+    upload_image: "Talletetaan kuvaa...",
   }
 }
 
