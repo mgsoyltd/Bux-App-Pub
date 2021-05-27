@@ -8,7 +8,7 @@ import Pagination from "./common/pagination";
 import SearchBox from "./common/searchBox";
 import { paginate } from "../utils/paginate";
 import strings from "../services/textService";
-import { base64Flag } from "../utils/arrayBufferToBase64";
+// import { base64Flag } from "../utils/arrayBufferToBase64";
 
 class Readings extends Component {
 	state = {
@@ -26,14 +26,14 @@ class Readings extends Component {
 			.then(({ data: readingData }) => {
 				const readingsArray = [...readingData];
 				// console.log(readingsArray);
-				readingsArray.map((reading) => {
-					if (reading.books_data.image) {
-						let imageStr = reading.books_data.image.data;
-						reading.books_data.img = base64Flag + imageStr;
-					}
-					// console.log(reading);
-					return reading;
-				});
+				// readingsArray.map((reading) => {
+				// 	if (reading.books_data.image) {
+				// 		let imageStr = reading.books_data.image.data;
+				// 		reading.books_data.img = base64Flag + imageStr;
+				// 	}
+				// 	console.log(reading);
+				// 	return reading;
+				// });
 				this.setState({ readings: readingsArray });
 			})
 			.catch((err) => {
@@ -52,7 +52,7 @@ class Readings extends Component {
 			await deleteReading(reading._id);
 			toast.success(strings.reading_deleted);
 		} catch (ex) {
-			// Expected (404: not found, 400: bac request) - CLIENT ERRORS
+			// Expected (404: not found, 400: bad request) - CLIENT ERRORS
 			//	- Display a specific error message
 			//
 			// Unexpected (network down, server down, db down, bug)

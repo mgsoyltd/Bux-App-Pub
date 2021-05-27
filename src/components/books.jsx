@@ -4,12 +4,17 @@ import _ from "lodash";
 import { toast } from "react-toastify";
 
 import { getBooks, deleteBook } from "../services/bookService";
-import { getReadings, saveReading } from "../services/readingsService";
+import {
+	getReadings,
+	saveReading,
+	getReadingsByBook,
+} from "../services/readingsService";
 import BooksTable from "./booksTable";
 import Pagination from "./common/pagination";
 import SearchBox from "./common/searchBox";
 import { paginate } from "../utils/paginate";
 import strings from "../services/textService";
+import { destroyImageSigned } from "../services/imageService";
 // import arrayBufferToBase64, { base64Flag } from "../utils/arrayBufferToBase64";
 
 class Books extends Component {
@@ -30,14 +35,14 @@ class Books extends Component {
 				if (bookData) {
 					let booksArray = [...bookData];
 					// console.log(booksArray);
-					booksArray.map((book) => {
-						// console.log(book);
-						// if (book.image) {
-						// 	let imageStr = arrayBufferToBase64(book.image.data.data);
-						// 	book.img = base64Flag + imageStr;
-						// }
-						return book;
-					});
+					// booksArray.map((book) => {
+					// 		console.log(book);
+					// 		if (book.image) {
+					// 			let imageStr = arrayBufferToBase64(book.image.data.data);
+					// 			book.img = base64Flag + imageStr;
+					// 		}
+					// 	return book;
+					// });
 					this.setState({ books: booksArray, isFetchingData: false });
 				}
 			})
@@ -63,6 +68,13 @@ class Books extends Component {
 	}
 
 	handleDelete = async (book) => {
+		// Do not allow deletion if book has readings
+		const reading = await getReadingsByBook(book._id);
+		// console.log(book._id, reading);
+		if (reading) {
+			toast.error(strings.book_has_readings);
+			return;
+		}
 		const originalBooks = this.state.books;
 		const books = originalBooks.filter((m) => m._id !== book._id);
 		this.setState({ books });
@@ -82,7 +94,11 @@ class Books extends Component {
 					case 400:
 						toast.error(strings.bad_request);
 						break;
-					case 200:
+					case 200: // Success
+						// Destroy book's image if any
+						if (book.imageURL) {
+							await destroyImageSigned(book.public_id);
+						}
 						toast.success(strings.book_deleted);
 						break;
 					default:

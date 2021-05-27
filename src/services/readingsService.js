@@ -14,6 +14,10 @@ function getReadingsExpandAllUrl() {
     return `${apiEndPoint}?$expand=*`;
 }
 
+function getReadingsPerBookUrl(idBook) {
+    return `${apiEndPoint}/forbook/${idBook}`;
+}
+
 export const getReadings = async () => {
     try {
         const res = await http.get(apiEndPoint);
@@ -41,6 +45,29 @@ export const getReading = async (id) => {
         return err;
     }
 }
+
+export const getReadingsByBook = async (bookId) => {
+    try {
+        const res = await http.get(getReadingsPerBookUrl(bookId));
+        return res;
+    } catch (err) {
+        return err;
+    }
+}
+
+// export const readingsForBook = (bookId) => {
+//     getReadingsByBook(bookId)
+//         .then(({ data: readingData }) => {
+//             const readingsArray = [...readingData];
+//             console.log(readingsArray);
+//             return readingsArray;
+//         })
+//         .catch((err) => {
+//             console.log("READ FAILURE:", err);
+//             return null;
+//         });
+// };
+
 
 export const saveReading = async (readings) => {
     console.log("<<<SAVEREADINGS>>>", readings);
