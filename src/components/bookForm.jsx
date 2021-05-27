@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import Joi from "joi";
 import { getBook, saveBook } from "../services/bookService";
 import Form from "./common/form";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { toast } from "react-toastify";
 import strings from "../services/textService";
-import arrayBufferToBase64, { base64Flag } from "../utils/arrayBufferToBase64";
 import UploadImage from "./imagePopup";
-import { uploadImageSigned } from "../services/imageService";
+import {
+	uploadImageSigned,
+	destroyImageSigned,
+} from "../services/imageService";
+// import arrayBufferToBase64, { base64Flag } from "../utils/arrayBufferToBase64";
 
 class BookForm extends Form {
 	state = {
@@ -27,6 +30,7 @@ class BookForm extends Form {
 		description: Joi.string().empty(""),
 		pages: Joi.number().greater(0),
 		imageURL: Joi.string().empty(""), // !! Allow empty string !!
+		public_id: Joi.string().empty(""),
 		image: Joi.allow(null),
 		book: Joi.allow(null),
 	});
@@ -41,12 +45,14 @@ class BookForm extends Form {
 			if (book.imageURL) {
 				// Image from the cloud
 				this.setState({ img: book.imageURL });
-			} else if (book.image) {
-				// Image loaded from Bux API database
-				let imageStr = arrayBufferToBase64(book.image.data.data);
-				const img = base64Flag + imageStr;
-				this.setState({ img: img });
 			}
+
+			// else if (book.image) {
+			// 	// Image loaded from Bux API database
+			// 	let imageStr = arrayBufferToBase64(book.image.data.data);
+			// 	const img = base64Flag + imageStr;
+			// 	this.setState({ img: img });
+			// }
 		} catch (ex) {
 			if (ex.request && ex.request.status === 404)
 				this.props.history.replace("/not-found");
@@ -66,6 +72,7 @@ class BookForm extends Form {
 			description: book.description || "",
 			pages: book.pages,
 			imageURL: book.imageURL || "",
+			public_id: book.public_id || "",
 			image: book.image,
 		};
 	}
@@ -80,11 +87,18 @@ class BookForm extends Form {
 			// fdImage = new FormData();
 			// fdImage.append("file", this.state.imageData, this.state.imageData.name);
 
+			// Destroy existing image
+			if (book.imageURL) {
+				await destroyImageSigned(book.public_id);
+			}
+
 			// Upload image to the cloud
-			const url = await uploadImageSigned(this.state.imageData);
-			if (url) {
-				book.imageURL = url; // Save URL on a book
-				this.setState({ img: url }); // Show the image
+			const info = await uploadImageSigned(this.state.imageData);
+			if (info) {
+				// console.log("<<INFO>>", info.url, info.public_id);
+				book.imageURL = info.url; // Save URL on a book
+				book.public_id = info.public_id; // Save public_id on a book
+				this.setState({ img: info.url }); // Show the image
 			}
 		}
 

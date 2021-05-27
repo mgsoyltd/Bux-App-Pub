@@ -32,10 +32,6 @@ class ReadingForm extends Form {
 		comments: Joi.string().empty(""), // Optional
 	});
 
-	async componentDidMount() {
-		await this.populateReading();
-	}
-
 	async populateReading() {
 		try {
 			const readingId = this.props.match.params.id;
@@ -53,6 +49,10 @@ class ReadingForm extends Form {
 			if (ex.request && ex.request.status === 404)
 				this.props.history.replace("/not-found");
 		}
+	}
+
+	async componentDidMount() {
+		await this.populateReading();
 	}
 
 	mapToViewModel(reading) {
@@ -98,19 +98,19 @@ class ReadingForm extends Form {
 								{this.renderOutput("author", strings.author)}
 								{this.renderOutput("ISBN", strings.ISBN)}
 								{this.renderOutput("pages", strings.pages, "number")}
-								{this.renderSlider(
+								{this.renderInputRange(
 									"current_page",
 									strings.current_page,
-									this.state.data.current_page,
+									"number",
 									"0",
 									this.state.data.pages
 								)}
-								{this.renderSlider(
+								{this.renderInputRange(
 									"time_spent",
 									strings.time_spent,
-									this.state.data.time_spent,
+									"number",
 									"0",
-									"600"
+									"3600"
 								)}
 								{this.renderRating("rating", strings.rating)}
 								{this.renderInput("comments", strings.comments)}

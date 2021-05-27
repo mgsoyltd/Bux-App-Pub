@@ -1,16 +1,20 @@
 import crypto from 'crypto';
 require('dotenv').config();
 
-const baseUrl = process.env.REACT_APP_API_BASE_URL;
+// "https://api.cloudinary.com/v1_1/dyq0bvuqg/image/upload"
 
 /**
  * Upload signed image to Cloudinary using REST API
  * @param {*} image     Image data
- * @returns {Url|null}  Image URL
+ * @returns {res|null}  Image info
  */
 export const uploadImageSigned = async (image) => {
 
   // console.log(process.env);
+
+  const baseUrl = process.env.REACT_APP_API_BASE_URL
+    + process.env.REACT_APP_API_CLOUD_NAME
+    + "/image/upload";
 
   // Get the timestamp in seconds
   const timestamp = Math.round((new Date()).getTime() / 1000);
@@ -32,30 +36,84 @@ export const uploadImageSigned = async (image) => {
 
   const data = new FormData()
   data.append("file", image)
+  data.append("upload_preset", process.env.REACT_APP_API_UPLOAD_PRESET)
+  data.append("cloud_name", process.env.REACT_APP_API_CLOUD_NAME)
   data.append("api_key", process.env.REACT_APP_API_KEY)
   data.append("timestamp", timestamp)
   data.append("signature", signature)
-  data.append("upload_preset", process.env.REACT_APP_API_UPLOAD_PRESET)
-  data.append("cloud_name", process.env.REACT_APP_API_CLOUD_NAME)
 
   // Post the image to the cloud
   try {
     const response = await fetch(baseUrl, { method: "post", body: data });
     const res = await response.json();
-    // console.log("<<FETCH>>", res);
-    return res.secure_url;
+    // console.log("<<UPLOAD>>", res);
+    return res;
   } catch (err) {
-    console.log("fetch", err);
+    console.log("<<UPLOAD>>", err);
   }
   return null;
 }
 
 /**
+ * Destroy signed image to Cloudinary using REST API
+ * @param {*} public_id   Public ID of the image  
+ * @returns {boolean}     true when ok    
+ */
+export const destroyImageSigned = async (public_id) => {
+
+  if (typeof public_id === "undefined" || !public_id) {
+    console.log("<<DESTROY>>", "Missing public_id");
+    return false;
+  }
+
+  const baseUrl = process.env.REACT_APP_API_BASE_URL
+    + process.env.REACT_APP_API_CLOUD_NAME
+    + "/image/destroy";
+
+  // Get the timestamp in seconds
+  const timestamp = Math.round((new Date()).getTime() / 1000);
+
+  // Create the signature
+  // 'public_id=<public_id>&timestamp=1621937214'
+  const payload =
+    "public_id=" + public_id
+    + "&timestamp=" + timestamp.toString()
+    + process.env.REACT_APP_API_SECRET;
+
+  // Create SHA256 signature
+  const signature = crypto.createHash('sha256').update(payload).digest('hex');
+
+  // console.log("Payload:", payload);
+  // console.log('Signature:', signature);
+
+  const data = new FormData()
+  data.append("public_id", public_id)
+  data.append("api_key", process.env.REACT_APP_API_KEY)
+  data.append("timestamp", timestamp)
+  data.append("signature", signature)
+
+  // Destroy the image from the cloud
+  try {
+    const response = await fetch(baseUrl, { method: "post", body: data });
+    const res = await response.json();
+    console.log("<<DESTROY>>", res);
+    return true;
+  } catch (err) {
+    console.log("<<DESTROY>>", err);
+  }
+  return false;
+}
+
+/**
  * Upload unsigned image to Cloudinary using REST API
  * @param {*} image     Image data
- * @returns {Url|null}  Image URL
+ * @returns {res|null}  Image info
  */
 export const uploadImageUnsigned = async (image) => {
+
+  const baseUrl = process.env.REACT_APP_API_BASE_URL
+    + process.env.REACT_APP_API_CLOUD_NAME
+    + "/image/upload";
 
   const data = new FormData()
   data.append("file", image)
@@ -66,12 +124,12 @@ export const uploadImageUnsigned = async (image) => {
   try {
     const response = await fetch(baseUrl, { method: "post", body: data });
     const res = await response.json();
-    console.log(res);
-    return res.secure_url;
+    // console.log("<<UPLOAD>>", res);
+    return res;
   } catch (err) {
-    console.log(err);
-    return null;
+    console.log("<<UPLOAD>>", err);
   }
+  return null;
 
 }
 

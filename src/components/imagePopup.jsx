@@ -24,9 +24,13 @@ const UploadImage = (state) => {
 		// console.log("<<<selectedImages>>>", images);
 		if (images.length === 0) {
 			state.data.imageData = null;
+			// Restore the old image on the book from
+			document.querySelector("img").src = state.data.data.imageURL;
 			toast.success(strings.image_cancelled);
 		} else {
 			state.data.imageData = images[0];
+			// Preview image on the book from
+			document.querySelector("img").src = URL.createObjectURL(images[0]);
 			toast.success(strings.image_selected);
 		}
 	};
@@ -42,6 +46,7 @@ const UploadImage = (state) => {
 				onHide={handleCancel}
 				backdrop="static"
 				keyboard={false}
+				centered
 			>
 				<Modal.Header closeButton>
 					<Modal.Title>{strings.upload_image}</Modal.Title>

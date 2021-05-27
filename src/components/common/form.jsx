@@ -4,6 +4,8 @@ import Input from "./input";
 import InputPH from "./inputPH";
 import Select from "./select";
 import Ratings from "./ratings";
+import Slider from "./slider";
+import { forceNumber } from "../../utils/forceNumber";
 
 class Form extends Component {
 	state = {
@@ -56,6 +58,16 @@ class Form extends Component {
 		const errors = { ...this.state.errors };
 		const data = { ...this.state.data };
 		data[name] = newRating;
+		this.setState({ data, errors });
+	};
+
+	handleSlide = ({ currentTarget: input }) => {
+		// console.log(input);
+		const errors = {};
+		const data = { ...this.state.data };
+		// console.log(data[input.name]);
+		const newVal = forceNumber(input.value);
+		data[input.name] = newVal;
 		this.setState({ data, errors });
 	};
 
@@ -151,7 +163,7 @@ class Form extends Component {
 				name={name}
 				label={label}
 				value={data[name]}
-				readonly
+				readOnly
 			/>
 		);
 	}
@@ -179,6 +191,22 @@ class Form extends Component {
 				value={data[name]}
 				handler={this.handleRatings}
 				color={color}
+			/>
+		);
+	}
+
+	renderSlider(name, label, value, min = "0", max = "10", step = "1") {
+		// const { data, errors } = this.state;
+		return (
+			<Slider
+				name={name}
+				label={label}
+				value={value}
+				id={name}
+				min={min}
+				max={max}
+				step={step}
+				onChange={this.handleSlide.bind(this)}
 			/>
 		);
 	}
