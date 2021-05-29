@@ -72,7 +72,8 @@ class Books extends Component {
 		const reading = await getReadingsByBook(book._id);
 		// console.log(book._id, reading.data);
 		if (reading) {
-			toast.error(strings.book_has_readings + reading.data[0].users_data.name);
+			const username = reading.data[0].users_data.name || "";
+			toast.error(strings.book_has_readings + username);
 			return;
 		}
 		const originalBooks = this.state.books;

@@ -11,9 +11,7 @@
 		"@testing-library/user-event": "^12.1.10",
 		"axios": "^0.21.1",
 		"bootstrap": "^4.6.0",
-		"env-cmd": "^10.1.0",
 		"joi": "^17.4.0",
-		"jwt-decode": "^3.1.2",
 		"moment": "^2.29.1",
 		"react": "^17.0.1",
 		"react-bootstrap": "^1.5.1",
@@ -27,8 +25,7 @@
 		"react-scroll": "^1.8.2",
 		"react-star-ratings": "^2.3.0",
 		"react-toastify": "^7.0.3",
-		"styled-components": "^5.2.1",
-		"web-vitals": "^1.0.1"
+		"styled-components": "^5.2.1"
 	},
 	"scripts": {
 		"start": "react-scripts start",
