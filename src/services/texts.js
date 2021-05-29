@@ -56,7 +56,7 @@ const texts = {
     finnish_lang: "FI - Finnish",
     english_lang: "EN - English",
     uploading_image: "Uploading the image...",
-    book_has_readings: "Book is still in use and cannot be deleted.",
+    book_has_readings: "Book is still used by user ",
   },
   fi: {
     app_title: "Lukutavoitteet",
@@ -115,7 +115,7 @@ const texts = {
     finnish_lang: "FI - Suomi",
     english_lang: "EN - Englanti",
     uploading_image: "Talletetaan kuvaa...",
-    book_has_readings: "Kirja on vielä jollakin käytössä eikä voida poistaa.",
+    book_has_readings: "Kirja on vielä käytössä käyttäjällä ",
   }
 }
 

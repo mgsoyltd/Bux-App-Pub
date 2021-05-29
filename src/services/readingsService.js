@@ -15,7 +15,7 @@ function getReadingsExpandAllUrl() {
 }
 
 function getReadingsPerBookUrl(idBook) {
-    return `${apiEndPoint}/forbook/${idBook}`;
+    return `${apiEndPoint}/forbook/${idBook}?$expand=books_id,users_data.name`;
 }
 
 export const getReadings = async () => {
@@ -45,7 +45,12 @@ export const getReading = async (id) => {
         return err;
     }
 }
-
+/**
+ * Get Readings by a book
+ * @param {*} bookId 
+ * @returns books_id            Book's ID
+ * @returns users_data.name     Users's name
+ */
 export const getReadingsByBook = async (bookId) => {
     try {
         const res = await http.get(getReadingsPerBookUrl(bookId));

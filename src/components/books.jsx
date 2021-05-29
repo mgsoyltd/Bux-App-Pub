@@ -70,9 +70,9 @@ class Books extends Component {
 	handleDelete = async (book) => {
 		// Do not allow deletion if book has readings
 		const reading = await getReadingsByBook(book._id);
-		// console.log(book._id, reading);
+		// console.log(book._id, reading.data);
 		if (reading) {
-			toast.error(strings.book_has_readings);
+			toast.error(strings.book_has_readings + reading.data[0].users_data.name);
 			return;
 		}
 		const originalBooks = this.state.books;
