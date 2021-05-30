@@ -13,7 +13,10 @@
 
 # misc
 .DS_Store
-.env*
+.env
+.env.development.local
+.env.production.local
+.env.production
 .htaccess
 
 npm-debug.log*
