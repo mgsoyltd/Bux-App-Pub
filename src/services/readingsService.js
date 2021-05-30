@@ -75,7 +75,7 @@ export const getReadingsByBook = async (bookId) => {
 
 
 export const saveReading = async (readings) => {
-    console.log("<<<SAVEREADINGS>>>", readings);
+    // console.log("<<<SAVEREADINGS>>>", readings);
     if (readings._id) {
         // Update the readings data
         const body = { ...readings };

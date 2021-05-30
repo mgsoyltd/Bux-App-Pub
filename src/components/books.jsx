@@ -71,7 +71,7 @@ class Books extends Component {
 		// Do not allow deletion if book has readings
 		const reading = await getReadingsByBook(book._id);
 		// console.log(book._id, reading.data);
-		if (reading) {
+		if (reading && reading.data && reading.data.length > 0) {
 			const username = reading.data[0].users_data.name || "";
 			toast.error(strings.book_has_readings + username);
 			return;
