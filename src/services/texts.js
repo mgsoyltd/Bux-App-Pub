@@ -58,6 +58,8 @@ const texts = {
     english_lang: "EN - English",
     uploading_image: "Uploading the image...",
     book_has_readings: "Book is still used by user ",
+    prev_logon_time: "Your previous login was: ",
+    greetings: "Welcome ",
   },
   fi: {
     app_title: "Lukutavoitteet",
@@ -118,6 +120,8 @@ const texts = {
     english_lang: "EN - Englanti",
     uploading_image: "Talletetaan kuvaa...",
     book_has_readings: "Kirja on vielä käytössä käyttäjällä ",
+    prev_logon_time: "Edellinen sisäänkirjautumisesi oli: ",
+    greetings: "Tervetuloa ",
   }
 }
 

@@ -8,6 +8,7 @@ import strings from "../services/textService";
 import logo from "../mgs_logo.svg";
 import Form from "./common/form";
 import auth from "../services/authService";
+import { sleep } from "./common/sleep";
 
 class LoginForm extends Form {
 	state = {
@@ -40,8 +41,36 @@ class LoginForm extends Form {
 						toast.error(strings.bad_request);
 						break;
 					case 200:
-						const { state } = this.props.location;
-						window.location = state ? state.from.pathname : "/readings";
+						// Display previous login date
+						const { data: resp } = res;
+						let doze = 0;
+						if (resp.prevLogonTime !== undefined && resp.prevLogonTime) {
+							doze = 5000;
+							const date = new Date(resp.prevLogonTime);
+							let langu = strings.getLanguage();
+							let locale = "fi-FI";
+							if (langu !== "fi") {
+								locale = "en-US";
+							}
+							const greetings =
+								strings.greetings +
+								resp.name +
+								" - " +
+								strings.prev_logon_time +
+								date.toLocaleDateString(locale) +
+								" " +
+								date.toLocaleTimeString(locale);
+							toast(greetings, {
+								position: "top-center",
+								autoClose: doze,
+								pauseOnFocusLoss: false,
+							});
+						}
+						sleep(doze).then(() => {
+							// Forward to a route
+							const { state } = this.props.location;
+							window.location = state ? state.from.pathname : "/readings";
+						});
 						break;
 					default:
 						break;
