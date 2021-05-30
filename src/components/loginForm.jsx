@@ -31,7 +31,7 @@ class LoginForm extends Form {
 						toast.error(strings.internal_error);
 						break;
 					case 403:
-						toast.error(strings.access_denied);
+						toast.error(strings.too_many_attempts);
 						break;
 					case 401:
 						toast.error(strings.access_denied);
