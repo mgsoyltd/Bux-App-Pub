@@ -5,6 +5,7 @@ import * as userService from "../services/userService";
 import { Redirect } from "react-router-dom";
 import strings from "../services/textService";
 import auth from "../services/authService";
+import { toast } from "react-toastify";
 
 class RegisterForm extends Form {
 	state = {
@@ -33,9 +34,8 @@ class RegisterForm extends Form {
 			//	- Log them
 			//	- Display a generic and friendly error message
 			if (ex.response && ex.response.status === 400) {
-				const errors = { ...this.state.errors };
-				errors.username = ex.response.data;
-				this.setState({ errors });
+				const errmsg = ex.response.data.msg;
+				toast.error(errmsg);
 			}
 		}
 	};

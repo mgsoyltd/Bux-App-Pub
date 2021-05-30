@@ -45,7 +45,7 @@ class LoginForm extends Form {
 						const { data: resp } = res;
 						let doze = 0;
 						if (resp.prevLogonTime !== undefined && resp.prevLogonTime) {
-							doze = 5000;
+							doze = 3000;
 							const date = new Date(resp.prevLogonTime);
 							let langu = strings.getLanguage();
 							let locale = "fi-FI";
@@ -83,10 +83,15 @@ class LoginForm extends Form {
 			// Unexpected (network down, server down, db down, bug)
 			//	- Log them
 			//	- Display a generic and friendly error message
-			if (ex.response && ex.response.status === 400) {
-				const errors = { ...this.state.errors };
-				errors.username = ex.response.data;
-				this.setState({ errors });
+			if (
+				ex.response &&
+				(ex.response.status === 400 || // validation error
+					ex.response.status === 401 || // Invalid email or password
+					ex.response.status === 403 || // Too many invalid authentication attempts
+					ex.response.status === 404) // Not found
+			) {
+				const errmsg = ex.response.data.msg;
+				toast.error(errmsg);
 			}
 		}
 	};
