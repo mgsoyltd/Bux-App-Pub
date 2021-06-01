@@ -1,6 +1,7 @@
 ## Introduction
 
 This project is the frontend React app for the Bux - a books reading goal app.
+The Bux API is the backend of this app and book images are stored in the cloud using Cloudinary API.
 
 ## Available Scripts
 
