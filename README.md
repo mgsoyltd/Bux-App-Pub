@@ -80,3 +80,7 @@ In production the following environment variables must be set:
     REACT_APP_API_SECRET=<Cloudinary API Secret>
     REACT_APP_API_UPLOAD_PRESET=<Cloudinary Upload Preset>
     REACT_APP_API_CLOUD_NAME=<Cloudinary Cloud Name>
+
+### Copyright
+
+© Copyright Morning Glow Solutions Oy Ltd - All Rights Reserved.
