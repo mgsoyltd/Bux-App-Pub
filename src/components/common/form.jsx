@@ -196,7 +196,7 @@ class Form extends Component {
 	}
 
 	renderSlider(name, label, value, min = "0", max = "10", step = "1") {
-		// const { data, errors } = this.state;
+		const { data, errors } = this.state;
 		return (
 			<Slider
 				name={name}
@@ -207,6 +207,7 @@ class Form extends Component {
 				max={max}
 				step={step}
 				onChange={this.handleSlide.bind(this)}
+				error={errors[name]}
 			/>
 		);
 	}
