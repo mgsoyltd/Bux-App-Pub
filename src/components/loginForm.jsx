@@ -9,11 +9,13 @@ import logo from "../mgs_logo.svg";
 import Form from "./common/form";
 import auth from "../services/authService";
 import { sleep } from "./common/sleep";
+import "../styles/spinner.css";
 
 class LoginForm extends Form {
 	state = {
 		data: { email: "", password: "" },
 		errors: {},
+		loading: false,
 	};
 
 	schema = Joi.object({
@@ -24,8 +26,10 @@ class LoginForm extends Form {
 	doSubmit = async () => {
 		// Call the server
 		try {
+			this.loading = true;
 			const { email, password } = this.state.data;
 			const res = await auth.login(email, password);
+			this.loading = false;
 			if (res.request) {
 				switch (res.request.status) {
 					case 404:
@@ -45,7 +49,7 @@ class LoginForm extends Form {
 						const { data: resp } = res;
 						let doze = 0;
 						if (resp.prevLogonTime !== undefined && resp.prevLogonTime) {
-							doze = 3000;
+							doze = 2000;
 							const date = new Date(resp.prevLogonTime);
 							let langu = strings.getLanguage();
 							let locale = "fi-FI";
@@ -98,7 +102,6 @@ class LoginForm extends Form {
 
 	render() {
 		if (auth.isLoggedIn()) return <Redirect to="/readings" />;
-
 		return (
 			<div className="text-center">
 				<main className="form-signin">
@@ -122,13 +125,15 @@ class LoginForm extends Form {
 								"password"
 							)}
 						</div>
-						<div className="checkbox mb-3">
-							<label>
-								<input type="checkbox" value="remember-me" />{" "}
-								{strings.remember_me}
-							</label>
+						<div>
+							<br />
 						</div>
-						{this.renderButton(strings.login, "w-100 btn btn-lg btn-primary")}
+						<button
+							disabled={this.validate()}
+							className={"w-100 btn btn-lg btn-primary"}
+						>
+							{this.loading ? <div className="loader"></div> : strings.login}
+						</button>
 					</form>
 				</main>
 			</div>

@@ -2,7 +2,6 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import "react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css";
 import RangeSlider from "react-bootstrap-range-slider";
-import Input from "./input";
 
 const Slider = ({ name, label, value, onChange, error, ...rest }) => {
 	return (
@@ -20,7 +19,16 @@ const Slider = ({ name, label, value, onChange, error, ...rest }) => {
 			/>
 			<div className="input-group-append ml-4">
 				<span>
-					<Input type="text" name={name} value={value} onChange={onChange} />
+					<input
+						type="text"
+						name={name}
+						id={name}
+						className="form-control"
+						value={value}
+						onChange={onChange}
+						size="4"
+						maxLength="4"
+					/>
 				</span>
 			</div>
 			{error && <div className="alert alert-danger"></div>}
