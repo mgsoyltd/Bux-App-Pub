@@ -11,7 +11,7 @@ In the project directory, run:
 
 ### Environment Variables in Development
 
-In development the following environment variables must be set in file .env.development.local
+In development the following environment variables must be set in file .env.development.local\
 Template in file "sample .env.development.local"
 
 #### Bux API
