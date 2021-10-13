@@ -3,6 +3,29 @@
 This project is the frontend React app for the Bux - a books reading goals app.\
 The Bux API is the backend of this app and book images are stored in the cloud using Cloudinary API.
 
+## Dependencies
+
+In the project directory, run:
+
+### `yarn`
+
+### Environment Variables in Development
+
+In development the following environment variables must be set:
+
+#### Bux API
+
+    REACT_APP_API_URL="http://localhost:3000/api"
+    PORT=3001
+
+#### Cloudinary
+
+    REACT_APP_API_BASE_URL=<Cloudinary API Base URL>
+    REACT_APP_API_KEY=<Cloudinary API Key>
+    REACT_APP_API_SECRET=<Cloudinary API Secret>
+    REACT_APP_API_UPLOAD_PRESET=<Cloudinary Upload Preset>
+    REACT_APP_API_CLOUD_NAME=<Cloudinary Cloud Name>
+
 ## Available Scripts
 
 In the project directory, you can run:
@@ -27,7 +50,7 @@ It correctly bundles React in production mode and optimizes the build for the be
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
-### Deployment
+## Deployment
 
 ### Environment Variables
 
