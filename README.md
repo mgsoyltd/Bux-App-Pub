@@ -33,7 +33,7 @@ Your app is ready to be deployed!
 
 In production the following environment variables must be set:
 
-    REACT_APP_API_URL=<Bux API URL>   E.g. https://bux-api.herokuapp.com/api
+    REACT_APP_API_URL=<Bux API URL>   E.g. https://<appname>.herokuapp.com/api
 
     REACT_APP_API_BASE_URL=<Cloudinary API Base URL>
     REACT_APP_API_KEY=<Cloudinary API Key>
