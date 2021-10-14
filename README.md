@@ -1,7 +1,10 @@
 ## Introduction
 
 This project is the frontend React app for the Bux - a books reading goals app.\
-The Bux API is the backend of this app and book images are stored in the cloud using Cloudinary API.
+The Bux API is the backend of this app and book images are stored in the cloud using the Cloudinary API.
+
+Bux API: https://github.com/mgsoyltd/Bux-Api-Pub.git \
+Cloudinary: https://cloudinary.com/
 
 ## Dependencies
 
@@ -41,7 +44,7 @@ You will also see any lint errors in the console.
 
 ### `yarn test`
 
-Launches the test runner in the interactive watch mode.\
+Launches the test runner in the interactive watch mode.
 
 ### `yarn build`
 
